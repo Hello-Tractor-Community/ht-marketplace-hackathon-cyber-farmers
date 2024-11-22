@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react"
 import Wangari from "./assets/wangari_image.jpg"
 import { FaUserCircle } from "react-icons/fa"

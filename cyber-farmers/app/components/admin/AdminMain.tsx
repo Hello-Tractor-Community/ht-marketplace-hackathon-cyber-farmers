@@ -1,17 +1,15 @@
+"use client";
+
 import { useState,useEffect,useRef, Dispatch, SetStateAction, MutableRefObject, ReactNode} from "react"
 import {Stock, StockItem} from "./stock"
 import {Inventory} from "./inventory"
 import { ProfileDisplay } from "./userName";
 import {SaleItem, Sales} from "./sales"
-import {FaRegWindowClose,FaBars,FaMoon, FaBook, FaDollarSign, FaTruck, FaFacebookSquare, FaBookOpen, FaHome, FaSun, FaSalesforce} from "react-icons/fa";
+import {FaRegWindowClose,FaBars,FaMoon, FaBook, FaDollarSign, FaTruck, FaFacebookSquare, FaBookOpen, FaHome, FaSun, FaSalesforce, FaQuestionCircle} from "react-icons/fa";
 import clsx from "clsx"
-import {useTheme} from "next-themes"
-import { ItemSales, StockLevel } from "./OgetaGraphs";
-import { useAppDispatch, useAppSelector } from "./states/hooks";
-import { AddExpenditure, ExpenditureByName, InitDatabase, InventoriesByName, OrdersByName, SalesByName, StocksByName } from "../wailsjs/go/main/AgeDb";
-import { main } from "../wailsjs/go/models";
-import { fullExpenditure, fullInventory, fullOrders, fullSales, fullStock } from "./states/newReducer";
 import { Alert } from "./notifications";
+import appIcon from "./assets/Hello Tractor_RGB_BLACK_-Cart-03.png"
+import Image from "next/image";
 
 
 type LinkItem = {
@@ -34,10 +32,9 @@ const links:Array<LinkItem> = [
     {name: "Home",trackingString:"home", componentRef:<Home/>,icon:<FaHome/>},
     // for each inventory enable the edit and delete option the both of which bring a popup to confirm your action
     {name: "Inventory",trackingString:"inventory", componentRef:<Inventory/>,icon:<FaBookOpen/>},
+    {name: "inquiries",componentRef: <Stock/>,icon:<FaQuestionCircle/>,trackingString: "stock"},
     {name: "sales analytics",trackingString:"sales",icon:<FaDollarSign/>, componentRef:<Sales/>},
-    {name: "orders",trackingString:"orders",icon:<FaTruck/>, componentRef:<Orders/>},
     {name: "stock",componentRef: <Stock/>,icon:<FaBook/>,trackingString: "stock"},
-    {name: "Expenditure",trackingString:"expenditure", componentRef:<Expenditure/>,icon:<FaSalesforce/>}
 ]
 
 enum Visibility {
@@ -47,29 +44,31 @@ enum Visibility {
 
 
 export function AdminWrapper(){
-    const reduxDispatch = useAppDispatch()
     const [counterState,setCounterState] = useState(0)
     const [mainViewState,setMainViewState] = useState<JSX.Element>(<Home/>)
     const [darkState,setDarkState] = useState(<></>)
     const [alertState,setAlertState] = useState(<></>)
+    const [linkState,setLinkState] = useState<Array<LinkItem>>([])
     //for tracking the current path we're in
     const currentPath = useRef<string>("")
     const [menuState,setMenuState] = useState(<></>)
     
+    useEffect(function(){
+        setLinkState(links)
+    },[])
     
     useEffect(function(){
         currentPath.current = "home"
-        setMenuState(<HamburgerMenu setMenuState={setMenuState} itemsList={links} resolvedTheme={resolvedTheme} setMainViewState={setMainViewState} currentPath={currentPath} />)
-    },[])
+        setMenuState(<HamburgerMenu setMenuState={setMenuState} itemsList={linkState} setMainViewState={setMainViewState} currentPath={currentPath} />)
+    },[linkState])
 
 
     return(
         <div className="w-full h-screen fixed flex items-center flex-col gap-4 top-0 z-30 left-0 dark:bg-black bg-white">
-            <SplashScreen/>
             <div className="w-full mx-4 text-2xl relative flex items-center box-border px-4 justify-between gap-12 h-12 rounded-lg mb-1 bg-transparent shadow-sm shadow-blue-600">
                 <div className="flex gap-8 items-center justify-start">
-                    <FaBars className="text-2xl" onClick={(e:any) => setMenuState(<HamburgerMenu resolvedTheme={resolvedTheme} setMenuState={setMenuState} itemsList={links} setMainViewState={setMainViewState} currentPath={currentPath}/>)}/>
-                    <p className="font-bold dark:text-white text-black text-center justify-self-center">AGE TECH HARDWARE KATITO</p>
+                    <FaBars className="text-2xl" onClick={(e:any) => setMenuState(<HamburgerMenu setMenuState={setMenuState} itemsList={links} setMainViewState={setMainViewState} currentPath={currentPath}/>)}/>
+                    <Image alt="icon / logo" src={appIcon} className="w-64 h-8 object-cover object-center" width={64} height={8}/>
                 </div>
                 <ProfileDisplay  userName="Olivia" img=""/>
             </div>
@@ -92,7 +91,7 @@ export function Home(){
     )
 }
 
-export function HamburgerMenu({setMenuState,itemsList,setMainViewState,currentPath,resolvedTheme}:{currentPath:MutableRefObject<string>,setMainViewState:Dispatch<SetStateAction<JSX.Element>>,itemsList:Array<LinkItem>,resolvedTheme:string | undefined,setMenuState:Dispatch<SetStateAction<JSX.Element>>}){
+export function HamburgerMenu({setMenuState,itemsList,setMainViewState,currentPath}:{currentPath:MutableRefObject<string>,setMainViewState:Dispatch<SetStateAction<JSX.Element>>,itemsList:Array<LinkItem>,setMenuState:Dispatch<SetStateAction<JSX.Element>>}){
     const currentPathRef = useRef<string>("")
     const [pathState,setPathsState] = useState<string>("")
     const [menuListState,setMenuListState] = useState(<></>) 
@@ -112,7 +111,7 @@ export function HamburgerMenu({setMenuState,itemsList,setMainViewState,currentPa
         setMenuListState(itemsList != undefined && itemsList != null ? 
             <>
             {itemsList.map(function(item,index){
-                return <ButtonComponent pathState={pathState} setPathsState={setPathsState} pageChanger={pageChanger} item={item}  key={index} currentPath={currentPathRef} resolvedTheme={resolvedTheme}/>
+                return <ButtonComponent pathState={pathState} setPathsState={setPathsState} pageChanger={pageChanger} item={item}  key={index} currentPath={currentPathRef} />
             })}                
             </>
         :
@@ -137,23 +136,17 @@ export function HamburgerMenu({setMenuState,itemsList,setMainViewState,currentPa
 }
 
 
-export function ButtonComponent({pathState,setPathsState,item,currentPath,resolvedTheme,pageChanger}:{pathState:string,setPathsState:Dispatch<SetStateAction<string>>,pageChanger:(componentRef:JSX.Element,trackingString:string,setPathsState:Dispatch<SetStateAction<string>>) => void,item:LinkItem,currentPath:MutableRefObject<string>,resolvedTheme:string | undefined}){
+export function ButtonComponent({pathState,setPathsState,item,currentPath,pageChanger}:{pathState:string,setPathsState:Dispatch<SetStateAction<string>>,pageChanger:(componentRef:JSX.Element,trackingString:string,setPathsState:Dispatch<SetStateAction<string>>) => void,item:LinkItem,currentPath:MutableRefObject<string>}){
     const [buttonColorState,setButtonColorState] = useState<{color:string,backgroundColor?:string}>({color:"grey"})
     
     useEffect(function(){
         if(item.trackingString == pathState){
-            /*if(resolvedTheme == "dark"){
-                setButtonColorState({color:"white"})
-            }
-            else{
-                setButtonColorState({color:"blue"})
-            }*/
             setButtonColorState({color:"white",backgroundColor:"black"})
         }
         else{   
             setButtonColorState({color:"grey"})
         }
-    },[pathState,resolvedTheme])
+    },[pathState])
     return(
         <div  className={`w-full h-auto flex flex-col gap-2 items-start`}>
             <div style={buttonColorState} onClick={(e:any) => pageChanger(item.componentRef,item.trackingString,setPathsState)}  className={clsx("font-bold w-fit  h-auto py-2 px-3 rounded-md flex items-center gap-2 border-2 border-blue-600",{"bg-transparent": item.trackingString == currentPath.current," bg-transparent ": item.trackingString != currentPath.current})}>
@@ -164,7 +157,7 @@ export function ButtonComponent({pathState,setPathsState,item,currentPath,resolv
             {item.innerList != undefined ?
             item.innerList.map(function(nestedItem,index){
                 return <div className={`w-full h-auto pl-4 mt-2 ml-6`}>
-                    <button onClick={(e:any) => pageChanger(item.componentRef,item.trackingString,setPathsState)}  key={index} className={clsx("font-bold w-fit h-auto py-2 px-3 rounded-md shadow-sm shadow-blue-600 text-slate-600♠",{" bg-transparent shadow-sm shadow-blue-600  ": item.trackingString == currentPath.current," bg-transparent ": item.trackingString != currentPath.current})} >
+                    <button onClick={(e:any) => pageChanger(item.componentRef,item.trackingString,setPathsState)}  key={index} className={clsx("font-bold w-fit h-auto py-2 px-3 rounded-md shadow-sm shadow-orange-600 text-slate-600♠",{" bg-transparent shadow-sm shadow-orange-600  ": item.trackingString == currentPath.current," bg-transparent ": item.trackingString != currentPath.current})} >
                         {nestedItem.name}                        
                     </button>          
                 </div>

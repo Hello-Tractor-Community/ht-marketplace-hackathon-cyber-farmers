@@ -1,21 +1,83 @@
+"use client";
 
 import { useEffect, useState } from "react"
 import { Alert, EmptyAlert, EmptySection, Success } from "./notifications"
-import {useSelector,useDispatch} from "react-redux"
 
 import {FaDownload,FaFilter,FaSearch, FaStar,FaExclamationCircle} from "react-icons/fa"
-import { useAppDispatch, useAppSelector } from "./states/hooks"
 import { CategorySorter, itemSearch, reverseSorter } from "./utilities"
 import { objectArrDuplicateHandler } from "./inventory"
-import { SalesByName } from "../wailsjs/go/main/AgeDb"
-import { main } from "../wailsjs/go/models"
-import { fullSales } from "./states/newReducer"
 
-// have different sales graph, one for the profits made per day, cumulative for a month, for a year, and for more than a year
-// for more than a year is now tracked by years, months,weeks and days i.e written as profit to date
+export type SaleItem = {
+    ItemName:string,
+    ItemsSold:string | number,
+    ProfitsCash: string | number,
+    ProfitsPercentage: string | number,
+    Category: string,
+    Type: string,
+}
+
+let fakeSales = [
+    {
+        ItemName: "Mabati",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "mabati",
+        Type: "3m"
+    },
+    {
+        ItemName: "Nails",
+        ItemsSold: 350,
+        ProfitsCash: 5000,
+        ProfitsPercentage: 53,
+        Category: "nails",
+        Type: "1kg"
+    },
+    {
+        ItemName: "Nails",
+        ItemsSold: 350,
+        ProfitsCash: 5000,
+        ProfitsPercentage: -3,
+        Category: "nails",
+        Type: "1kg"
+    },
+    {
+        ItemName: "binding wire",
+        ItemsSold: 150,
+        ProfitsCash: 1000,
+        ProfitsPercentage: 5,
+        Category: "wires",
+        Type: "3m"
+    },
+    {
+        ItemName: "Mabati",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "mabati",
+        Type: "3m"
+    },
+    {
+        ItemName: "Nails",
+        ItemsSold: 350,
+        ProfitsCash: 5000,
+        ProfitsPercentage: 53,
+        Category: "nails",
+        Type: "1kg"
+    },
+    {
+        ItemName: "binding wire",
+        ItemsSold: 150,
+        ProfitsCash: 1000,
+        ProfitsPercentage: 5,
+        Category: "wires",
+        Type: "3m"
+    }
+]
+
+
 export function Sales(){
-    const reduxDispatch = useAppDispatch()
-    const sales = useAppSelector(state => state.sales)
+    const [sales,setSales] = useState<Array<SaleItem>>(fakeSales)
     const [successState,setSuccessState] = useState("Congragulations sales updated successfuly")
     const [salesState,setSalesState] = useState(<></>)
     const [totalProfitsState,setTotalProfitsState] = useState<number>(0)
@@ -95,7 +157,6 @@ export function Sales(){
                         <option value="month" className="bg-transparent">month</option>
                         <option value="year" className="bg-transparent">year</option>
                     </select>
-                    <button className="border-2 border-blue-600 rounded-lg px-3 py-1 flex gap-2 items-center"><FaDownload className="text-blue-600"/><span>export</span></button>
                 </div>
             </div>
             {salesState}
@@ -103,80 +164,6 @@ export function Sales(){
     )
 }
 
-// profit for a day
-
-// profit for a week
-
-// profit for months ordered horizontally for 12 months which refreshes after every year.
-
-export type SaleItem = {
-    ItemName:string,
-    ItemsSold:string | number,
-    ProfitsCash: string | number,
-    ProfitsPercentage: string | number,
-    Category: string,
-    Type: string,
-}
-
-// profit for years arranged in a group by year e.g year 2024 whereby they are scrollable horizontally so you can simply choose the year you want like let's say year 2023
-let fakeSales = [
-    {
-        ItemName: "Mabati",
-        ItemsSold: 250,
-        ProfitsCash: 30000,
-        ProfitsPercentage: 25,
-        Category: "mabati",
-        Type: "3m"
-    },
-    {
-        ItemName: "Nails",
-        ItemsSold: 350,
-        ProfitsCash: 5000,
-        ProfitsPercentage: 53,
-        Category: "nails",
-        Type: "1kg"
-    },
-    {
-        ItemName: "Nails",
-        ItemsSold: 350,
-        ProfitsCash: 5000,
-        ProfitsPercentage: -3,
-        Category: "nails",
-        Type: "1kg"
-    },
-    {
-        ItemName: "binding wire",
-        ItemsSold: 150,
-        ProfitsCash: 1000,
-        ProfitsPercentage: 5,
-        Category: "wires",
-        Type: "3m"
-    },
-    {
-        ItemName: "Mabati",
-        ItemsSold: 250,
-        ProfitsCash: 30000,
-        ProfitsPercentage: 25,
-        Category: "mabati",
-        Type: "3m"
-    },
-    {
-        ItemName: "Nails",
-        ItemsSold: 350,
-        ProfitsCash: 5000,
-        ProfitsPercentage: 53,
-        Category: "nails",
-        Type: "1kg"
-    },
-    {
-        ItemName: "binding wire",
-        ItemsSold: 150,
-        ProfitsCash: 1000,
-        ProfitsPercentage: 5,
-        Category: "wires",
-        Type: "3m"
-    }
-]
 
 
 export function RawSales({sales}:{sales:Array<SaleItem>}){
@@ -193,16 +180,11 @@ export function RawSales({sales}:{sales:Array<SaleItem>}){
             setSectionState(
                 <div className="w-full h-full flex flex-col overflow-auto">
                 {sales.map(function(sale,index){
-                    return <IndividualSale ItemName={sale.ItemName} ItemsSold={Number(sale.ItemsSold)} ProfitsCash={Number(sale.ProfitsCash)} ProfitsPercentage={Number(sale.ProfitsPercentage)}/>
+                    return <IndividualSale key={index} ItemName={sale.ItemName} ItemsSold={Number(sale.ItemsSold)} ProfitsCash={Number(sale.ProfitsCash)} ProfitsPercentage={Number(sale.ProfitsPercentage)}/>
                 })}
                 </div>
             )
         }
-        /*
-        else{
-            //for fetching from the db.
-            setSalesArray(fakeSales) 
-        }*/
     },[sales])
     return(
         <div className="flex flex-col">
@@ -269,7 +251,7 @@ export function IndividualSale({ItemName,ItemsSold,ProfitsCash,ProfitsPercentage
         }
     },[])
     return(
-        <div className="w-full py-0 h-[3.5rem] grid grid-cols-5 justify-items-start place-items-center border-b-2 dark:text-white text-black border-blue-600 ">
+        <div className="w-full py-2 h-[3.5rem] grid grid-cols-5 justify-items-start place-items-center border-b-2 dark:text-white text-black border-blue-600 ">
                 <div className="w-full h-full flex items-center">
                     {ItemName.toLowerCase()}
                 </div>
@@ -285,18 +267,6 @@ export function IndividualSale({ItemName,ItemsSold,ProfitsCash,ProfitsPercentage
                 <div className="w-full h-full flex items-center">
                     {profitStatus}
                 </div>
-        </div>
-    )
-}
-
-export function GraphSales(){
-    useEffect(function(){
-        //fetch the raw sales data for use in the graphical analysis
-    },[])
-
-    return(
-        <div>
-
         </div>
     )
 }

@@ -1,12 +1,9 @@
+"use client";
+
 import { useState,useEffect,useRef, Dispatch, SetStateAction} from "react"
 import { Alert, EmptyAlert, EmptySection, Success } from "./notifications"
 import { FaPlus, FaTrash,FaPen, FaSearch, FaFilter, FaDownload, FaMemory, FaSdCard, FaSort, FaWifi, FaRegNewspaper } from "react-icons/fa"
-import { useAppDispatch,useAppSelector } from "./states/hooks"
-import {fullInventory,addInventory,updateInventory,deleteInventory,addSales,addStock, addExpenditure, deleteExpenditure, deleteStock, updateStock, updateExpenditure, deleteSales} from "./states/newReducer"
 import { daySetter, reverseSorter, timeSetter ,filterArr,itemSearch, CategorySorter,priceSorter,yearLister} from "./utilities" 
-import {InitDatabase,AddInventory as addInventoryDb,InventoriesByName, AddInventory, DeleteInventory, DeleteStock, DeleteExpenditure, UpdateInventory, UpdateStock, UpdateExpenditure, AddSale, AddStock, AddExpenditure, DeleteSale} from "../wailsjs/go/main/AgeDb";
-import { main } from "../wailsjs/go/models"
-import { PersonAge } from "../wailsjs/go/main/App"
 
 // deformed bars: D10,D12,D8,
 // Nails: roofing nails,fence nails
@@ -42,17 +39,6 @@ export type StockItem = {
     ItemFullStock: string | number
 }
 
-
-type ExpenditureItem = {
-    ItemName:string,
-    Type: string,
-    Category: string,
-    ItemsBought: string | number,
-    Capital: string | number,
-    Contribution: string | number,
-    SellingPrice: string | number,
-    BuyingPrice: string | number
-}
 
 const fakeInventory = [
     {
@@ -209,17 +195,6 @@ export function objectArrDuplicateHandler({arr,arrOfProperties}:{arr:Array<any>,
     //return newArr
 }
 
-type InventoryDbRow = {
-	ID :number,
-    ItemName: string,
-    ItemType: string,
-    Quantity: number,
-    BuyingPrice: number,
-    SellingPrice: number,
-    Date: string,
-    ItemCategory: string
-}
-
 type Person = {
     Name: string,
     Age: number
@@ -228,9 +203,7 @@ type Person = {
 
 //items sold will be in the sales analytics page not the inventory.
 export function Inventory(){
-    const reduxDispatch = useAppDispatch()
-    const dbInventory = useAppSelector(state => state.inventory)
-    //const reduxDispatch = useAppDispatch()
+    const [dbInventory,setDbInventory] = useState<Array<Inventory>>(fakeInventory)
     const [popupState,setPopupState] = useState(<></>)
     const [searchLabelState,setSearchLabelState] = useState("")
     const [sortedInventory,setSortedInventory] = useState<Array<any>>([])
@@ -241,56 +214,7 @@ export function Inventory(){
     const [filterInventory,setFilterInventory] = useState<Array<Inventory>>([])
     const [newInventoryState,setNewInventoryState] = useState(<></>)
 
-    /*useEffect(function(){
-        //fetch the Type directly from the main interface.
-        setCounterState(prevState => prevState + 1)
-        InventoriesByName("mabati").then(function(value:Array<main.InventoryDbRow>){
-            if(value == null){
-                //setAlertState(<Alert err="internal server error" counter={counterState}/>)
-            }
-            else{
-                let newInventoryValue:Array<Inventory> = value.map(function(inventory,index){
-                    return {
-                        ItemName:inventory.ItemName,
-                        Type:inventory.ItemType,
-                        Quantity:inventory.Quantity,
-                        BuyingPrice:inventory.BuyingPrice,
-                        SellingPrice:inventory.SellingPrice,
-                        ArrivalDate:inventory.Date,
-                        Category:inventory.ItemCategory,        
-                    }
-                })
-                reduxDispatch(fullInventory({inventory:newInventoryValue}))
-            }
-        }).catch(function(err){
-            alert(`err found:   ${err}`)
-            setAlertState(<Alert err="internal server error" counter={counterState}/>)
-        })
-            
-
-    },[])*/
-
-
-    //for setting the fetched data once the first time it renders
     useEffect(function(){
-        //fetches from an api to get the current items and their details in the inventory.
-        //reduxDispatch(fullInventory({inventory:fakeInventory}))
-        
-        /*let inventoryDecider = function(){
-            let actualInventory:Array<Inventory> = []
-
-            if(dbInventory.length > 0){
-                actualInventory = dbInventory
-                //works perfectly.
-            }
-            else{
-                //logic for fetching from the db
-                actualInventory = fakeInventory
-            }   
-            return actualInventory 
-        }
-
-        let actualInventory:Array<Inventory> = inventoryDecider()*/
         setInventoriesState([<EmptySection section="inventory" description="no inventory item to display yet"/>])
 
         if(dbInventory.length > 0){
@@ -353,33 +277,8 @@ export function Inventory(){
         }
         else if(e.target.value == "price"){
             setSortedInventory(objectArrDuplicateHandler({arr:sortedInventory,arrOfProperties:["ItemName","Type","Category"]}).sort(priceSorter))
-            /*setInventoriesState(sortedInventory.map(function(item,index){
-                return <InventoryItem index={index} sortedInventory={sortedInventory} setSortedInventory={setSortedInventory} key={index} Category={item.Category} ItemType={item.Type} ItemName={item.ItemName} ArrivalDate={item.ArrivalDate} BuyingPrice={item.BuyingPrice} SellingPrice={item.SellingPrice} Quantity={item.Quantity}/>        
-            }))*/
         }
     }
-
-    /*let sortHandler = function(e:any){
-        e.preventDefault()
-        if(e.target.value == "date"){
-            setSortedInventory(objectArrDuplicateHandler({arr:sortedInventory,arrOfProperties:["ItemName","Type","Category"]}).sort(reverseSorter))
-            setInventoriesState(sortedInventory.map(function(item,index){
-                return <InventoryItem index={index} sortedInventory={sortedInventory} setSortedInventory={setSortedInventory} key={index} Category={item.Category} ItemType={item.Type} ItemName={item.ItemName} ArrivalDate={item.ArrivalDate} BuyingPrice={item.BuyingPrice} SellingPrice={item.SellingPrice} Quantity={item.Quantity}/>        
-            }))
-        }
-        else if(e.target.value == "Category"){
-            setSortedInventory(objectArrDuplicateHandler({arr:sortedInventory,arrOfProperties:["ItemName","Type","Category"]}).sort(CategorySorter))
-            setInventoriesState(sortedInventory.map(function(item,index){
-                return <InventoryItem index={index} sortedInventory={sortedInventory} setSortedInventory={setSortedInventory} key={index} Category={item.Category} ItemType={item.Type} ItemName={item.ItemName} ArrivalDate={item.ArrivalDate} BuyingPrice={item.BuyingPrice} SellingPrice={item.SellingPrice} Quantity={item.Quantity}/>        
-            }))
-        }
-        else if(e.target.value == "price"){
-            setSortedInventory(objectArrDuplicateHandler({arr:sortedInventory,arrOfProperties:["ItemName","Type","Category"]}).sort(priceSorter))
-            setInventoriesState(sortedInventory.map(function(item,index){
-                return <InventoryItem index={index} sortedInventory={sortedInventory} setSortedInventory={setSortedInventory} key={index} Category={item.Category} ItemType={item.Type} ItemName={item.ItemName} ArrivalDate={item.ArrivalDate} BuyingPrice={item.BuyingPrice} SellingPrice={item.SellingPrice} Quantity={item.Quantity}/>        
-            }))
-        }
-    }*/
 
     let filterHandler = function(e:any){
         e.preventDefault()
@@ -413,31 +312,7 @@ export function Inventory(){
             <h1 className="dark:text-white text-black text-left text-xl font-bold mb-4">Inventory</h1>
             {alertState}
             <div className="flex justify-between">
-                <div className="w-fit">
                 {newInventoryState}
-                </div>
-                <div className="w-fit h-auto items-center flex">
-                    <button className=" rounded-lg px-3 py-1 flex gap-2 items-center"><span className="dark:text-white text-black">year</span></button>
-                    <select  name="periodSelection" id="periodSelection" className="border-2 border-blue-600 px-3 py-1 rounded-lg h-fit flex bg-transparent gap-2 items-center">
-                        {
-                        yearLister(filterInventory,"ArrivalDate").map(function(item,index){
-                            return  <option value={item} className="bg-transparent">{item}</option>
-                        })
-                        }
-                    </select>
-                    <button className=" rounded-lg px-3 py-1 flex gap-2 items-center"><span className="dark:text-white text-black">month</span></button>
-                    <select  name="periodSelection" id="periodSelection" className="border-2 border-blue-600 px-3 py-1 rounded-lg h-fit flex bg-transparent gap-2 items-center">
-                        {setCreator(filterInventory).map(function(item,index){
-                            return  <option value={item} className="bg-transparent">{item}</option>
-                        })}
-                    </select>
-                    <button className=" rounded-lg px-3 py-1 flex gap-2 items-center"><span className="dark:text-white text-black">week</span></button>
-                    <select  name="periodSelection" id="periodSelection" className="border-2 border-blue-600 px-3 py-1 rounded-lg h-fit  flex bg-transparent gap-2 items-center">
-                        {setCreator(filterInventory).map(function(item,index){
-                            return  <option value={item} className="bg-transparent">{item}</option>
-                        })}
-                    </select>
-                </div>
             </div>
             <div className="w-full flex justify-between mb-8">
                 <div className="w-[20rem] relative h-[2rem] flex justify-between items-center px-3 rounded-xl border-2 border-blue-600">
@@ -449,43 +324,183 @@ export function Inventory(){
                     <button className=" rounded-lg px-3 py-1 flex gap-2 items-center"><span>sort by</span><FaWifi className="text-green-600"/></button>
                     <select onChange={sortHandler} className="border-2 border-blue-600 px-3 py-1 rounded-lg flex bg-transparent gap-2 items-center">
                         <option value="date">date</option>
-                        <option value="Category">Category</option>
+                        <option value="Category">brand</option>
                         <option value="price">price</option>
                     </select>
                     <button className=" rounded-lg px-3 py-1 flex gap-2 items-center"><span className="dark:text-white text-black">filter</span><FaFilter className="text-green-600"/></button>
                     <select onChange={filterHandler} name="periodSelection" id="periodSelection" className="border-2 border-blue-600 px-3 py-1 rounded-lg flex bg-transparent gap-2 items-center">
                         {setCreator(filterInventory).map(function(item,index){
-                            return  <option value={item} className="bg-transparent">{item}</option>
+                            return  <option key={index} value={item} className="bg-transparent">{item}</option>
                         })}
                     </select>
-                    <button className="border-2 border-blue-600 rounded-lg px-3 py-1 flex gap-2 items-center"><FaDownload className="text-blue-600"/><span>export</span></button>
                 </div>
             </div>
             <div className="w-full h-2/3 bg-transparent overflow-auto">
                 <div className="w-full grid grid-cols-7 gap-6 justify-items-start font-bold dark:text-white text-black border-b-2 dark:border-white border-black">
                         {/*create a table here */}
                         <div>Item Name</div>      
-                        <div>Type</div>
-                        <div>Category</div>
+                        <div>model</div>
+                        <div>brand</div>
                         <div>Full Stock</div>
                         <div>buying price</div>
                         <div>selling price</div>
                         <div>arrival date</div>
                 </div>
-                {inventoriesState}
+                <div className="w-full h-[23rem] flex flex-col overflow-auto">
+                    {inventoriesState}
+                </div>
             </div>
         </div>
     )
 }
 
+let fakeSales = [
+    {
+        ItemName: "Mabati",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "mabati",
+        Type: "3m"
+    },
+    {
+        ItemName: "Nails",
+        ItemsSold: 350,
+        ProfitsCash: 5000,
+        ProfitsPercentage: 53,
+        Category: "nails",
+        Type: "1kg"
+    },
+    {
+        ItemName: "Nails",
+        ItemsSold: 350,
+        ProfitsCash: 5000,
+        ProfitsPercentage: -3,
+        Category: "nails",
+        Type: "1kg"
+    },
+    {
+        ItemName: "binding wire",
+        ItemsSold: 150,
+        ProfitsCash: 1000,
+        ProfitsPercentage: 5,
+        Category: "wires",
+        Type: "3m"
+    },
+    {
+        ItemName: "Mabati",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "mabati",
+        Type: "3m"
+    },
+    {
+        ItemName: "Nails",
+        ItemsSold: 350,
+        ProfitsCash: 5000,
+        ProfitsPercentage: 53,
+        Category: "nails",
+        Type: "1kg"
+    },
+    {
+        ItemName: "binding wire",
+        ItemsSold: 150,
+        ProfitsCash: 1000,
+        ProfitsPercentage: 5,
+        Category: "wires",
+        Type: "3m"
+    }
+]
+let fakeStocks = [
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 600,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 900,
+        ItemsInStock: 850
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 1000,
+        ItemsInStock: 100
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Mabati",
+        Type: "mabati",
+        Category: "mabati",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+]
+
 // add the ability to edit and delete the inventory item, remember for the edits, I need it to only edit 3 fields which are the items in stock, buying price and selling price.
 // the rest of the fields should not be input elements
 export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName,ItemType,ArrivalDate,Quantity,BuyingPrice,SellingPrice,Category}:{sortedInventory:Array<any>,index:number,setSortedInventory:Dispatch<SetStateAction<Array<any>>>,ItemName:string,ItemType:string,Category:string,Quantity:number,BuyingPrice:number,SellingPrice:number,ArrivalDate:string}){
-    const inventory = useAppSelector(state => state.inventory)
-    const stock = useAppSelector(state => state.stock)
-    const expenditure = useAppSelector(state => state.expenditure)
-    const sales = useAppSelector(state => state.sales)
-    const reduxDispatch = useAppDispatch()
+    const [inventory,setInventory] = useState<Array<Inventory>>(fakeInventory)
+    const [stock,setStock] = useState<Array<StockItem>>(fakeStocks)
+    const [sales,setSales] = useState<Array<SaleItem>>(fakeSales)
     const [saveState,setSaveState] = useState(<></>)
     const [ArrivalDateState,setArrivalDateState] = useState("")
     const todayRef = useRef("")
@@ -517,14 +532,14 @@ export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName
         
         //conditionals for setting the days and the time.
         if(todayRef.current.split(".")[0].split("/")[0] == ArrivalDate.split(".")[0].split("/")[0]){
-            setArrivalDateState(`today ${ArrivalDate.split(".")[1].split(":")[0]}:${ArrivalDate.split(".")[1].split(":")[1]}`)        
+            setArrivalDateState(`today`)        
         }
         else if(((Number(todayRef.current.split(".")[0].split("/")[0]) - Number(ArrivalDate.split(".")[0].split("/")[0])) < 7 ) && (todayRef.current.split(".")[0].split("/")[1] == ArrivalDate.split(".")[0].split("/")[1])){
             let day = daySetter(Number(todayRef.current.split(".")[0].split("/")[0]) - Number(ArrivalDate.split(".")[0].split("/")[0]))
-            setArrivalDateState(`${day} ${ArrivalDate.split(".")[1].split(":")[0]}:${ArrivalDate.split(".")[1].split(":")[1]}`)                
+            setArrivalDateState(`${day}`)                
         }
         else{
-            setArrivalDateState(`${ArrivalDate.split(".")[0]} ${ArrivalDate.split(".")[1].split(":")[0]}:${ArrivalDate.split(".")[1].split(":")[1]}`)                
+            setArrivalDateState(`${ArrivalDate.split(".")[0]}`)                
         }
     },[ArrivalDate])
 
@@ -544,39 +559,11 @@ export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName
         }
         let inventoryIndex = inventory.findIndex(findIndexHandler)
 
-        // delete for redux
-        reduxDispatch(deleteInventory({index:inventoryIndex}))
-        //for the db
-        let newDbInventory = new main.Inventory()
-        newDbInventory.ItemName = ItemName.toLowerCase()
-        newDbInventory.ItemType = ItemType.toLowerCase()
-        newDbInventory.Quantity = String(Quantity) 
-        newDbInventory.SellingPrice = String(SellingPrice)
-        newDbInventory.BuyingPrice = String(BuyingPrice)
-        newDbInventory.ItemCategory = Category.toLowerCase()
-        newDbInventory.Date = ArrivalDate
-
         //for the stock
         let stockIndexHandler = function(value:StockItem,index:number,array:Array<StockItem>){
             return (value.ItemName.toLowerCase() == ItemName.toLowerCase() && value.Type.toLowerCase() == ItemType.toLowerCase()) && value.Category.toLowerCase() == Category.toLowerCase() 
         }
-        let stockIndex = stock.findIndex(stockIndexHandler)
-        //update the stock
-        reduxDispatch(deleteStock({index:stockIndex}))
-        //for the db
-        let newDbStock = new main.Stock(stock[stockIndex])  
-        
-
-        //for the expenditure
-        let expenditureIndexHandler = function(value:ExpenditureItem,index:number,array:Array<ExpenditureItem>){
-            return (value.ItemName.toLowerCase() == ItemName.toLowerCase() && value.Type.toLowerCase() == ItemType.toLowerCase()) && value.Category.toLowerCase() == Category.toLowerCase() 
-        }
-        let expenditureIndex = expenditure.findIndex(expenditureIndexHandler)
-
-        reduxDispatch(deleteExpenditure({index:expenditureIndex}))
-        //for the db
-        let newDbExpenditure = new main.Expenditure(expenditure[expenditureIndex])  
-
+        let stockIndex = stock.findIndex(stockIndexHandler)        
 
         //for the sale item
         let saleIndexHandler = function(value:SaleItem,index:number,array:Array<SaleItem>){
@@ -584,42 +571,12 @@ export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName
         }
         let saleIndex = sales.findIndex(saleIndexHandler)
 
-        reduxDispatch(deleteSales({index:saleIndex}))
-        //for the db
-        let newDbSale = new main.Sale(sales[saleIndex])  
-
-
-
-
-
         setSortedInventory((previousState) => {
             return previousState.slice(0,index).concat(previousState.slice((index+1)))
         })
         
         setCountState((countState + 1))
         setAlertState(<Success success="item deleted successuly" counter={countState} />)
-
-        
-        DeleteInventory(newDbInventory).then(function(value){
-            setAlertState(<Success success="item deleted succesfully" counter={countState}/>)
-            DeleteStock(newDbStock).then(function(value){
-                //setAlertState(<Success success="item deleted succesfully" counter={countState}/>)
-                DeleteExpenditure(newDbExpenditure).then(function(value){
-                    //setAlertState(<Success success="item deleted succesfully" counter={countState}/>)
-                    DeleteSale(newDbSale).then(function(value){
-                        //setAlertState(<Success success="item deleted succesfully" counter={countState}/>)
-                    }).catch(function(err){
-                        setAlertState(<Alert err="internal server error" counter={countState}/>)
-                    })                    
-                }).catch(function(err){
-                    setAlertState(<Alert err="internal server error" counter={countState}/>)
-                })                
-            }).catch(function(err){
-                setAlertState(<Alert err="internal server error" counter={countState}/>)
-            })    
-        }).catch(function(err){
-            setAlertState(<Alert err="internal server error" counter={countState}/>)
-        })
 
     }
 
@@ -692,11 +649,6 @@ export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName
             ItemFullStock:Quantity
         }
 
-        //for the expenditure
-        let expenditureIndexHandler = function(value:ExpenditureItem,index:number,array:Array<ExpenditureItem>){
-            return (value.ItemName.toLowerCase() == ItemName.toLowerCase() && value.Type.toLowerCase() == ItemType.toLowerCase()) && value.Category.toLowerCase() == Category.toLowerCase() 
-        }
-        let expenditureIndex = expenditure.findIndex(expenditureIndexHandler)
         let totalItemsRaw = inventory.reduce(function(total,inventoryItem){
             return total + Number(inventoryItem.Quantity)
         },0)
@@ -706,17 +658,6 @@ export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName
         let totalItems = (totalItemsRaw + quantityDifference)
         setTotalItemsState(totalItems)
 
-        let updatedExpenditure:ExpenditureItem = {
-            ItemName:ItemName.toLowerCase(),
-            Type:ItemType.toLowerCase(),
-            Category:Category.toLowerCase(),
-            ItemsBought:expenditure[expenditureIndex].ItemsBought,
-            Capital:(Number(Quantity) * Number(BuyingPrice)),
-            Contribution:((Number(Quantity)/Number(totalItems)) * 100),
-            SellingPrice,
-            BuyingPrice,
-        }
-
 
         if((editContents.BuyingPrice != null && editContents.SellingPrice != null) && editContents.Quantity != null){
             setSaveState(<></>)
@@ -724,42 +665,12 @@ export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName
             // send them to the db since they'll be already updated in the frontend so that they can be updated in the backend as well
             setAlertState(<Success success="inventory changes updated succesfuly" counter={countState}/>)
             
-            reduxDispatch(updateInventory({index:inventoryIndex,inventory:updatedInventory}))
-            let dbUpdatedInventory = new main.Inventory()
-            dbUpdatedInventory.ItemName = updatedInventory.ItemName,
-            dbUpdatedInventory.ItemCategory= updatedInventory.Category,
-            dbUpdatedInventory.ItemType= updatedInventory.Type,
-            dbUpdatedInventory.Quantity = String(updatedInventory.Quantity),
-            dbUpdatedInventory.BuyingPrice = String(updatedInventory.BuyingPrice),
-            dbUpdatedInventory.SellingPrice = String(updatedInventory.SellingPrice),
-            dbUpdatedInventory.Date = updatedInventory.ArrivalDate
-            UpdateInventory(dbUpdatedInventory).then(function(value){
-                //setAlertState(<Success success="item updated succesfully" counter={countState}/>)
-                UpdateStock(new main.Stock(updatedStock)).then(function(value){
-                    //setAlertState(<Success success="item updated succesfully" counter={countState}/>)
-                    UpdateExpenditure(new main.Expenditure(updatedExpenditure)).then(function(value){
-                        //setAlertState(<Success success="item updated succesfully" counter={countState}/>)
-                    }).catch(function(err){
-                        setAlertState(<Alert err="internal server error" counter={countState}/>)
-                    })        
-                }).catch(function(err){
-                    setAlertState(<Alert err="internal server error" counter={countState}/>)
-                })     
-            }).catch(function(err){
-                setAlertState(<Alert err="internal server error" counter={countState}/>)
-            })
-    
-
-            //for the stock
-            reduxDispatch(updateStock({index:stockIndex,stock:updatedStock}))
-            //for the expenditure
-            reduxDispatch(updateExpenditure({index:expenditureIndex,expenditure:updatedExpenditure}))   
         }
     }
 
     // before saving a new item ensure that it's not in the db
     return(
-        <div className="w-full h-[6rem] flex flex-col gap-4 border-b-2 dark:text-white text-black border-blue-600">
+        <div className="w-full py-2 h-auto flex flex-col gap-4 border-b-2 dark:text-white text-black border-blue-600">
             {alertState}
             <form onSubmit={editSubmitHandler} className="w-full h-[2rem] grid grid-cols-7 gap-6 justify-items-start place-items-start text-left dark:text-white text-black">
                     <div>
@@ -804,10 +715,8 @@ export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName
 
 // the details should actually be an object with all the values current state.
 export function EditSave({totalItems,setEditStyle,setSaveState,ItemName,Quantity,BuyingPrice,SellingPrice,Category,Type,ArrivalDate}:{totalItems:number,setEditStyle:Dispatch<SetStateAction<{}>>,setSaveState:Dispatch<SetStateAction<JSX.Element>>,ArrivalDate:string,Type:string,Category:string,ItemName:string,Quantity:number,BuyingPrice:number,SellingPrice:number}){
-    const reduxDispatch = useAppDispatch()
-    const stock = useAppSelector(state => state.stock)
-    const expenditure = useAppSelector(state => state.expenditure) 
-    const inventory = useAppSelector(state => state.inventory)
+    const [stock,setStock] = useState(fakeStocks)
+    const [inventory,setInventory] = useState(fakeInventory)
 
 
     let saveHandler = function(e:any){
@@ -842,59 +751,13 @@ export function EditSave({totalItems,setEditStyle,setSaveState,ItemName,Quantity
             ItemFullStock:Quantity
         }
         
-        //for the expenditure
-        let expenditureIndexHandler = function(value:ExpenditureItem,index:number,array:Array<ExpenditureItem>){
-            return (value.ItemName.toLowerCase() == ItemName.toLowerCase() && value.Type.toLowerCase() == Type.toLowerCase()) && value.Category.toLowerCase() == Category.toLowerCase() 
-        }
-        let expenditureIndex = expenditure.findIndex(expenditureIndexHandler)
-        let updatedExpenditure:ExpenditureItem = {
-            ItemName:ItemName.toLowerCase(),
-            Type:Type.toLowerCase(),
-            Category:Category.toLowerCase(),
-            ItemsBought:expenditure[expenditureIndex].ItemsBought,
-            Capital:(Number(Quantity) * Number(BuyingPrice)),
-            Contribution:((Number(Quantity)/Number(totalItems)) * 100),
-            SellingPrice,
-            BuyingPrice,
-        }
-
-        
         
         let findIndexHandler = function(value:Inventory,index:number,array:Array<Inventory>){
             return (value.ItemName.toLowerCase() == ItemName.toLowerCase() && value.Type.toLowerCase() == Type.toLowerCase()) && value.Category.toLowerCase() == Category.toLowerCase() 
         }
 
         let inventoryIndex = inventory.findIndex(findIndexHandler)
-        reduxDispatch(updateInventory({index:inventoryIndex,inventory:updatedInventory}))
-        let dbUpdatedInventory = new main.Inventory()
-        dbUpdatedInventory.ItemName = updatedInventory.ItemName.toLowerCase(),
-        dbUpdatedInventory.ItemCategory= updatedInventory.Category.toLowerCase(),
-        dbUpdatedInventory.ItemType= updatedInventory.Type.toLowerCase(),
-        dbUpdatedInventory.Quantity = String(updatedInventory.Quantity),
-        dbUpdatedInventory.BuyingPrice = String(updatedInventory.BuyingPrice),
-        dbUpdatedInventory.SellingPrice = String(updatedInventory.SellingPrice),
-        dbUpdatedInventory.Date = updatedInventory.ArrivalDate
-        UpdateInventory(dbUpdatedInventory).then(function(value){
-            //setAlertState(<Success success="item updated succesfully" counter={countState}/>)
-            UpdateStock(new main.Stock(updatedStock)).then(function(value){
-                //setAlertState(<Success success="item updated succesfully" counter={countState}/>)
-                UpdateExpenditure(new main.Expenditure(updatedExpenditure)).then(function(value){
-                    //setAlertState(<Success success="item updated succesfully" counter={countState}/>)
-                }).catch(function(err){
-                    //setAlertState(<Alert err="internal server error" counter={countState}/>)
-                })        
-            }).catch(function(err){
-                //setAlertState(<Alert err="internal server error" counter={countState}/>)
-            }) 
-    
-        }).catch(function(err){
-            //setAlertState(<Alert err="internal server error" counter={countState}/>)
-        })
 
-        //for the stock
-        reduxDispatch(updateStock({index:stockIndex,stock:updatedStock}))
-        //for the expenditure
-        reduxDispatch(updateExpenditure({index:expenditureIndex,expenditure:updatedExpenditure}))   
     }
 
     return(
@@ -967,8 +830,7 @@ export function PopupInventory(){
 
 
 export function NewInventory({setAlertState,setSortedInventory,sortedInventory}:{setAlertState:Dispatch<SetStateAction<JSX.Element>>,setSortedInventory:Dispatch<SetStateAction<Inventory[]>>,sortedInventory:Array<Inventory>}){
-    const reduxDispatch = useAppDispatch()
-    const dbInventory = useAppSelector(state => state.inventory) 
+    const [dbInventory,setDbInventory] = useState<Array<Inventory>>(fakeInventory) 
     const [counter,setCounter] = useState(1)
     // add zod for Typesafety later on
 
@@ -1010,16 +872,6 @@ export function NewInventory({setAlertState,setSortedInventory,sortedInventory}:
             setAlertState(<Alert err="item already exists , kindly key in a new item" counter={counter}/>)
         }
         else{
-            //for the db
-            let newDbInventory = new main.Inventory()
-            newDbInventory.ItemName = ItemName.toLowerCase()
-            newDbInventory.ItemType = Type.toLowerCase()
-            newDbInventory.Quantity = Quantity 
-            newDbInventory.SellingPrice = SellingPrice
-            newDbInventory.BuyingPrice = BuyingPrice
-            newDbInventory.ItemCategory = Category.toLowerCase()
-            newDbInventory.Date = ArrivalDate
-
 
             //for the sale
             let newSale:SaleItem = {
@@ -1039,61 +891,11 @@ export function NewInventory({setAlertState,setSortedInventory,sortedInventory}:
                 ItemsInStock:Quantity,
                 ItemFullStock:Quantity,
             } 
-
-            let newExpenditure:ExpenditureItem = {
-                ItemName:ItemName.toLowerCase(),
-                Type:Type.toLowerCase(),
-                Category:Category.toLowerCase(),
-                Contribution: Math.floor((Number(Quantity)/Number(totalItems)) * 100),
-                ItemsBought:0,
-                Capital: (Number(Quantity) * Number(BuyingPrice)),
-                SellingPrice,
-                BuyingPrice
-            }
             
 
             if((ItemName.length > 0 ) && (Number(Quantity) > 0)){
                 //before adding the items check if they exist in the database that will have been fetched right about from the frontend then sent to the db for fast access to ensure that data reaches the client as fast as possible.
-                // is item present in the inventory or has it just been added.
-                
-                //for the db
-                AddInventory(newDbInventory).then(function(value:any){
-                    reduxDispatch(addInventory({inventory:newInventory}))
-                    setCounter((counter + 1))
-                    // add a new sale as well
-                    reduxDispatch(addSales({sales:newSale}))
-                    AddSale(new main.Sale(newSale)).then(function(value){
-                        AddStock(new main.Stock(newStock)).then(function(value){
-                            AddExpenditure(new main.Expenditure(newExpenditure)).then(function(value){
-
-                            }).catch(function(err){
-                                alert(`expenditure error: \n ${err}`)
-                                setAlertState(<Alert err="internal server error" counter={counter}/>)
-                            })
-                        }).catch(function(err){
-                            alert(`stock error: \n ${err}`)
-
-                            setAlertState(<Alert err="internal server error" counter={counter}/>)
-                        })    
-                    }).catch(function(err){
-                        alert(`sale error: \n ${err}`)
-                        setAlertState(<Alert err="internal server error" counter={counter}/>)
-                    })
-                    //add a new stock as well
-                    reduxDispatch(addStock({stock:newStock}))
-                    // add new expenditure as well 
-                    reduxDispatch(addExpenditure({expenditure:newExpenditure}))
-
-                    //save them as new items in the list automatically and send the data to the backend api.
-                    // use calculations from go backend for date and the total cost calculation before adding the new data to the list of orders automatically.        
-                    
-                    setAlertState(<Success success="new item added succesfully" counter={counter}/>)
-                    let newArr = [{ItemName,Type,BuyingPrice,SellingPrice,Category,Quantity,ArrivalDate}].concat(sortedInventory)
-                    setSortedInventory(objectArrDuplicateHandler({arr:newArr,arrOfProperties:["ItemName","Type","Category"]}).sort(reverseSorter)) 
-
-                }).catch(function(err){
-                    <Alert err="error adding new item" counter={counter}/>
-                })
+                // is item present in the inventory or has it just been added.                
             }
             else{
                 setCounter(prevState => prevState + 1)
@@ -1108,8 +910,8 @@ export function NewInventory({setAlertState,setSortedInventory,sortedInventory}:
             <h1 className="w-full flex justify-start text-xl font-bold text-blue-600">New Item</h1>
             <div className="w-full h-[2rem] grid grid-cols-7 gap-6 overflow-x-auto justify-items-start">
                 <div>Item Name</div>      
-                <div>Type</div>
-                <div>Category</div>
+                <div>model</div>
+                <div>brand</div>
                 <div>Full Stock</div>
                 <div>buying price</div>
                 <div>selling price</div>

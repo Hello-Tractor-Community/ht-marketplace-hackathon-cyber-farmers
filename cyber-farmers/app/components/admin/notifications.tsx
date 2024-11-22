@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef,useState } from "react"
 import { FaPlus,FaMailBulk, FaBurn, FaAmbulance, FaExclamationTriangle, FaExclamationCircle } from "react-icons/fa"
 
