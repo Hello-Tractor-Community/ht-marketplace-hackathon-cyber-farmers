@@ -1,19 +1,26 @@
 "use client";
+import "./globals.css";
 
-import { CldImage } from 'next-cloudinary';
 
-export default function Home() {
+import Header from './components/Header';
+import HeroSection from './components/home-page/HeroSection';
+import NavBar from './components/NavBar';
+import CategorySection from "./components/home-page/CategorySection";
+//import FeaturedBrands from '../components/home/FeaturedBrands';
+import ProductSection from './components/home-page/ProductSection';
+
+const HomePage = () => {
   return (
-    <div className="container">
-      <h1>Cloudinary Image in Next.js with CldImage</h1>
-      <CldImage
-        src="media/cyberFarmers/8943ba0de16ed09560b83289fd89aa89.jpg"
-        width="500"
-        height="500"
-        alt="Cyber Farmers Image"
-        crop="scale"
-        priority
-      />
+    <div>
+      <Header />
+      <NavBar />
+      <HeroSection />
+      <CategorySection />
+      <ProductSection />
     </div>
+
+
   );
-}
+};
+
+export default HomePage;
