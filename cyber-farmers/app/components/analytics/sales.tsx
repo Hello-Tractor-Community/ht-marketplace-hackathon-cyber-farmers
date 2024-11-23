@@ -18,61 +18,85 @@ export type SaleItem = {
 
 let fakeSales = [
     {
-        ItemName: "Mabati",
+        ItemName: "tractor 2",
         ItemsSold: 250,
         ProfitsCash: 30000,
         ProfitsPercentage: 25,
-        Category: "mabati",
-        Type: "3m"
+        Category: "johndeere",
+        Type: "v8"
     },
     {
-        ItemName: "Nails",
-        ItemsSold: 350,
-        ProfitsCash: 5000,
-        ProfitsPercentage: 53,
-        Category: "nails",
-        Type: "1kg"
-    },
-    {
-        ItemName: "Nails",
-        ItemsSold: 350,
-        ProfitsCash: 5000,
-        ProfitsPercentage: -3,
-        Category: "nails",
-        Type: "1kg"
-    },
-    {
-        ItemName: "binding wire",
-        ItemsSold: 150,
-        ProfitsCash: 1000,
-        ProfitsPercentage: 5,
-        Category: "wires",
-        Type: "3m"
-    },
-    {
-        ItemName: "Mabati",
+        ItemName: "tractor 2",
         ItemsSold: 250,
         ProfitsCash: 30000,
         ProfitsPercentage: 25,
-        Category: "mabati",
-        Type: "3m"
+        Category: "johndeere",
+        Type: "v8"
     },
     {
-        ItemName: "Nails",
-        ItemsSold: 350,
-        ProfitsCash: 5000,
-        ProfitsPercentage: 53,
-        Category: "nails",
-        Type: "1kg"
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
     },
     {
-        ItemName: "binding wire",
-        ItemsSold: 150,
-        ProfitsCash: 1000,
-        ProfitsPercentage: 5,
-        Category: "wires",
-        Type: "3m"
-    }
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
 ]
 
 

@@ -60,9 +60,9 @@ export function AdminWrapper({userName}:{userName:string}){
 
     return(
         <div className="w-full h-screen fixed flex items-center flex-col gap-4 top-0 z-30 left-0 dark:bg-black bg-white">
-            <div className="w-full mx-4 py-0 text-2xl relative flex items-center box-border px-4 justify-between gap-12 h-16 pb-2 rounded-lg mb-1 bg-transparent shadow-sm shadow-blue-600">
+            <div className="w-full mx-4 py-0 text-2xl relative flex items-center box-border px-4 justify-between gap-12 h-16 pb-2 pt-1 rounded-lg mb-1 bg-transparent shadow-sm shadow-orange-600">
                 <div className="flex py-0 gap-8 items-center justify-start">
-                    <FaBars className="text-2xl" onClick={(e:any) => setMenuState(<HamburgerMenu setMenuState={setMenuState} itemsList={links} setMainViewState={setMainViewState} currentPath={currentPath}/>)}/>
+                    <FaBars className="text-3xl" onClick={(e:any) => setMenuState(<HamburgerMenu setMenuState={setMenuState} itemsList={links} setMainViewState={setMainViewState} currentPath={currentPath}/>)}/>
                     <Image alt="icon-logo" src={appIcon} className="w-64 h-full object-fit object-center" width={512} height={64}/>
                 </div>
                 <ProfileDisplay  userName={userName} img=""/>
@@ -113,7 +113,7 @@ export function HamburgerMenu({setMenuState,itemsList,setMainViewState,currentPa
         setPathsState(trackingString)
     }
     return(
-        <div className={`sticky select-none left-0 top-0 px-3 flex flex-col items-end  overflow-auto h-full w-fit bg-transparent bg-opacity-40 shadow-sm shadow-blue-700  dark:text-white text-blue-950 rounded-lg`}>
+        <div className={`sticky select-none left-0 top-0 px-3 flex flex-col items-end  overflow-auto h-full w-fit bg-transparent bg-opacity-40 shadow-sm shadow-orange-700  dark:text-white text-blue-950 rounded-lg`}>
             <div className={`w-full flex justify-between h-12 px-3 pt-3  mb-4`}>
                 <div className={`w-fit h-fit text-slate-600 font-bold text-xl`}>menu</div>
                 <FaRegWindowClose className={`text-2xl text-red-500 `} onClick={cancelHandler}/>
@@ -139,7 +139,7 @@ export function ButtonComponent({pathState,setPathsState,item,currentPath,pageCh
     },[pathState])
     return(
         <div  className={`w-full h-auto flex flex-col gap-2 items-start`}>
-            <div style={buttonColorState} onClick={(e:any) => pageChanger(item.componentRef,item.trackingString,setPathsState)}  className={clsx("font-bold w-fit  h-auto py-2 px-3 rounded-md flex items-center gap-2 border-2 border-blue-600",{"bg-transparent": item.trackingString == currentPath.current," bg-transparent ": item.trackingString != currentPath.current})}>
+            <div style={buttonColorState} onClick={(e:any) => pageChanger(item.componentRef,item.trackingString,setPathsState)}  className={clsx("font-bold w-fit  h-auto py-2 px-3 rounded-md flex items-center gap-2 border-2 border-orange-600",{"bg-transparent": item.trackingString == currentPath.current," bg-transparent ": item.trackingString != currentPath.current})}>
                 <span>{item.icon}</span>
                 <span>{item.name}</span>       
             </div>

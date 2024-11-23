@@ -2,7 +2,6 @@
 
 import { useEffect,useRef,useState } from "react"
 import {FaDownload,FaExclamationCircle,FaFilter,FaSearch, FaTruck} from "react-icons/fa"
-import {useAppSelector } from "./states/hooks"
 import { EmptyAlert, EmptySection } from "./notifications"
 import { CategorySorter, itemSearch } from "./utilities"
 
@@ -22,81 +21,73 @@ export type StockItem = {
 
 let fakeStocks = [
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
-        ItemFullStock: 600,
-        ItemsInStock: 300
-        //calculate the percentage at runtime
-    },
-    {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
-        ItemFullStock: 900,
-        ItemsInStock: 850
-        //calculate the percentage at runtime
-    },
-    {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
-        ItemFullStock: 1000,
-        ItemsInStock: 100
-        //calculate the percentage at runtime
-    },
-    {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime

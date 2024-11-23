@@ -14,7 +14,7 @@ import {SaleItem, Sales} from "./sales"
 import {FaRegWindowClose,FaBars,FaMoon, FaBook, FaDollarSign, FaTruck, FaFacebookSquare, FaBookOpen, FaHome, FaSun, FaSalesforce, FaQuestionCircle} from "react-icons/fa";
 import clsx from "clsx"
 import { Alert } from "./notifications";
-import appIcon from "./assets/Hello Tractor_RGB_BLACK_-Cart-03.png"
+import appIcon from "./assets/HT_LOGO_RGB_Orange.png"
 import Image from "next/image";
 
 
@@ -69,12 +69,12 @@ export function AnalyticsWrapper({userName}:{userName:string}){
 
     return(
         <div className="w-full h-screen fixed flex items-center flex-col gap-4 top-0 z-30 left-0 dark:bg-black bg-white">
-            <div className="w-full mx-4 text-2xl relative flex items-center box-border px-4 justify-between gap-12 h-12 rounded-lg mb-1 bg-transparent shadow-sm shadow-blue-600">
+            <div className="w-full mx-4 text-2xl relative flex items-center box-border px-4 justify-between gap-12 h-16 rounded-lg mb-1 pb-2 bg-transparent shadow-sm shadow-orange-600">
                 <div className="flex gap-8 items-center justify-start">
-                    <FaBars className="text-2xl" onClick={(e:any) => setMenuState(<HamburgerMenu setMenuState={setMenuState} itemsList={links} setMainViewState={setMainViewState} currentPath={currentPath}/>)}/>
-                    <Image alt="icon-logo" src={appIcon} className="w-64 h-8 object-cover object-center" width={64} height={8}/>
+                    <FaBars className="text-3xl" onClick={(e:any) => setMenuState(<HamburgerMenu setMenuState={setMenuState} itemsList={links} setMainViewState={setMainViewState} currentPath={currentPath}/>)}/>
+                    <Image alt="icon-logo" src={appIcon} className="w-64 h-full object-fit object-center" width={512} height={64}/>
                 </div>
-                <ProfileDisplay  userName="Olivia" img=""/>
+                <ProfileDisplay  userName={userName} img=""/>
             </div>
             <div className="w-full relative px-4 h-5/6 flex gap-4 bg-transparent m-0">
                 <div className="sticky w-auto h-full flex-grow-0 z-30 flex-shrink-0 bg-transparent">
@@ -121,7 +121,7 @@ export function HamburgerMenu({setMenuState,itemsList,setMainViewState,currentPa
         setPathsState(trackingString)
     }
     return(
-        <div className={`sticky select-none left-0 top-0 px-3 flex flex-col items-end  overflow-auto h-full w-fit bg-transparent bg-opacity-40 shadow-sm shadow-blue-700  dark:text-white text-blue-950 rounded-lg`}>
+        <div className={`sticky select-none left-0 top-0 px-3 flex flex-col items-end  overflow-auto h-full w-fit bg-transparent bg-opacity-40 shadow-sm shadow-orange-700  dark:text-white text-blue-950 rounded-lg`}>
             <div className={`w-full flex justify-between h-12 px-3 pt-3  mb-4`}>
                 <div className={`w-fit h-fit text-slate-600 font-bold text-xl`}>menu</div>
                 <FaRegWindowClose className={`text-2xl text-red-500 `} onClick={cancelHandler}/>
@@ -147,7 +147,7 @@ export function ButtonComponent({pathState,setPathsState,item,currentPath,pageCh
     },[pathState])
     return(
         <div  className={`w-full h-auto flex flex-col gap-2 items-start`}>
-            <div style={buttonColorState} onClick={(e:any) => pageChanger(item.componentRef,item.trackingString,setPathsState)}  className={clsx("font-bold w-fit  h-auto py-2 px-3 rounded-md flex items-center gap-2 border-2 border-blue-600",{"bg-transparent": item.trackingString == currentPath.current," bg-transparent ": item.trackingString != currentPath.current})}>
+            <div style={buttonColorState} onClick={(e:any) => pageChanger(item.componentRef,item.trackingString,setPathsState)}  className={clsx("font-bold w-fit  h-auto py-2 px-3 rounded-md flex items-center gap-2 border-2 border-orange-600",{"bg-transparent": item.trackingString == currentPath.current," bg-transparent ": item.trackingString != currentPath.current})}>
                 <span>{item.icon}</span>
                 <span>{item.name}</span>       
             </div>

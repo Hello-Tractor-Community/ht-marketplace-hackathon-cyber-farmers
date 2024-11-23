@@ -5,12 +5,6 @@ import { Alert, EmptyAlert, EmptySection, Success } from "./notifications"
 import { FaPlus, FaTrash,FaPen, FaSearch, FaFilter, FaDownload, FaMemory, FaSdCard, FaSort, FaWifi, FaRegNewspaper } from "react-icons/fa"
 import { daySetter, reverseSorter, timeSetter ,filterArr,itemSearch, CategorySorter,priceSorter,yearLister} from "./utilities" 
 
-// deformed bars: D10,D12,D8,
-// Nails: roofing nails,fence nails
-// cement: bamburi cement,blue triangle
-// wallpass:
-// binding wire,
-// waterproof
 
 export type Inventory = {
     ItemName: string,
@@ -42,122 +36,95 @@ export type StockItem = {
 
 const fakeInventory = [
     {
-        ItemName: "Nyumba",
-        Type: "3m",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 870,
-        SellingPrice: 1000,
-        ArrivalDate: "25/02/2024.01:20:23",
-        Category: "mabati"
-    },
-    {
-        ItemName: "roofing",
-        Type: "1kg",
-        Quantity: 200,
-        BuyingPrice: 200,
-        SellingPrice: 250,
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
         ArrivalDate: "24/02/2024.01:20:23",
-        Category: "nails"
+        Category: "johndeere"
     },
     {
-        ItemName: "fencing",
-        Type: "1kg",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 300,
-        SellingPrice: 350,
-        ArrivalDate: "23/02/2024.01:20:23",
-        Category: "nails"
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
+        ArrivalDate: "24/02/2024.01:20:23",
+        Category: "johndeere"
     },
     {
-        ItemName: "Nyumba",
-        Type: "2.5m",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 725,
-        SellingPrice: 850,
-        ArrivalDate: timeSetter(),
-        Category: "mabati"
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
+        ArrivalDate: "24/02/2024.01:20:23",
+        Category: "johndeere"
     },
     {
-        ItemName: "Nyumba",
-        Type: "2m",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 580,
-        SellingPrice: 700,
-        ArrivalDate: "15/10/2024.01:20:23",
-        Category: "mabati"
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
+        ArrivalDate: "24/02/2024.01:20:23",
+        Category: "johndeere"
     },
     {
-        ItemName: "bamburi",
-        Type: "50kg",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 820,
-        SellingPrice: 860,
-        ArrivalDate: "09/10/2024.01:20:23",
-        Category: "cement"
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
+        ArrivalDate: "24/02/2024.01:20:23",
+        Category: "johndeere"
     },
     {
-        ItemName: "blue triangle",
-        Type: "50kg",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 850,
-        SellingPrice: 900,
-        ArrivalDate: "10/10/2024.01:20:23",
-        Category: "cement"
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
+        ArrivalDate: "24/02/2024.01:20:23",
+        Category: "johndeere"
     },
     {
-        ItemName: "wallpass",
-        Type: "3m",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 2200,
-        SellingPrice: 3000,
-        ArrivalDate: "25/03/2024.01:20:23",
-        Category: "wallpass"
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
+        ArrivalDate: "24/02/2024.01:20:23",
+        Category: "johndeere"
     },
     {
-        ItemName: "binding wire",
-        Type: "3m",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 3400,
-        SellingPrice: 4000,
-        ArrivalDate: "25/02/2023.01:20:23",
-        Category: "binding wire"
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
+        ArrivalDate: "24/02/2024.01:20:23",
+        Category: "johndeere"
     },
     {
-        ItemName: "D1",
-        Type: "3m",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 1290,
-        SellingPrice: 1350,
-        ArrivalDate: "25/03/2022.01:20:23",
-        Category: "deformed bars"
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
+        ArrivalDate: "24/02/2024.01:20:23",
+        Category: "johndeere"
     },
     {
-        ItemName: "D8",
-        Type: "3m",
+        ItemName: "Tractor4",
+        Type: "v8",
         Quantity: 200,
-        BuyingPrice: 590,
-        SellingPrice: 650,
-        ArrivalDate: "25/09/2024.01:20:23",
-        Category: "deformed bars"
+        BuyingPrice: 200000,
+        SellingPrice: 250000,
+        ArrivalDate: "24/02/2024.01:20:23",
+        Category: "johndeere"
     },
-    {
-        ItemName: "D10",
-        Type: "3m",
-        Quantity: 200,
-        BuyingPrice: 880,
-        SellingPrice: 950,
-        ArrivalDate: timeSetter(),
-        Category: "deformed bars"
-    },
-    {
-        ItemName: "R6",
-        Type: "3m",
-        Quantity: 200,
-        BuyingPrice: 200,
-        SellingPrice: 250,
-        ArrivalDate: timeSetter(),
-        Category: "deformed bars"
-    }
 ]
 
 export function objectArrDuplicateHandler({arr,arrOfProperties}:{arr:Array<any>,arrOfProperties:Array<any>}){
@@ -309,7 +276,7 @@ export function Listings(){
     //arrival date will be calculated by the system, the moment the data is keyed into the system as a new order
     return(
         <div className="w-full relative h-screen text-center dark:text-white text-black ">
-            <h1 className="dark:text-white text-black text-left text-xl font-bold mb-4">Inventory</h1>
+            <h1 className="dark:text-white text-black text-left text-xl font-bold mb-4">Listings</h1>
             {alertState}
             <div className="flex justify-between">
                 {newInventoryState}
@@ -336,15 +303,12 @@ export function Listings(){
                 </div>
             </div>
             <div className="w-full h-2/3 bg-transparent overflow-auto">
-                <div className="w-full grid grid-cols-7 gap-6 justify-items-start font-bold dark:text-white text-black border-b-2 dark:border-white border-black">
+                <div className="w-full grid grid-cols-4 gap-6 justify-items-start font-bold dark:text-white text-black border-b-2 dark:border-white border-black">
                         {/*create a table here */}
                         <div>Item Name</div>      
-                        <div>model</div>
                         <div>brand</div>
-                        <div>Full Stock</div>
-                        <div>buying price</div>
-                        <div>selling price</div>
-                        <div>arrival date</div>
+                        <div>price</div>
+                        <div>location</div>
                 </div>
                 <div className="w-full h-[23rem] flex flex-col overflow-auto">
                     {inventoriesState}
@@ -356,139 +320,155 @@ export function Listings(){
 
 let fakeSales = [
     {
-        ItemName: "Mabati",
+        ItemName: "tractor 2",
         ItemsSold: 250,
         ProfitsCash: 30000,
         ProfitsPercentage: 25,
-        Category: "mabati",
-        Type: "3m"
+        Category: "johndeere",
+        Type: "v8"
     },
     {
-        ItemName: "Nails",
-        ItemsSold: 350,
-        ProfitsCash: 5000,
-        ProfitsPercentage: 53,
-        Category: "nails",
-        Type: "1kg"
-    },
-    {
-        ItemName: "Nails",
-        ItemsSold: 350,
-        ProfitsCash: 5000,
-        ProfitsPercentage: -3,
-        Category: "nails",
-        Type: "1kg"
-    },
-    {
-        ItemName: "binding wire",
-        ItemsSold: 150,
-        ProfitsCash: 1000,
-        ProfitsPercentage: 5,
-        Category: "wires",
-        Type: "3m"
-    },
-    {
-        ItemName: "Mabati",
+        ItemName: "tractor 2",
         ItemsSold: 250,
         ProfitsCash: 30000,
         ProfitsPercentage: 25,
-        Category: "mabati",
-        Type: "3m"
+        Category: "johndeere",
+        Type: "v8"
     },
     {
-        ItemName: "Nails",
-        ItemsSold: 350,
-        ProfitsCash: 5000,
-        ProfitsPercentage: 53,
-        Category: "nails",
-        Type: "1kg"
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
     },
     {
-        ItemName: "binding wire",
-        ItemsSold: 150,
-        ProfitsCash: 1000,
-        ProfitsPercentage: 5,
-        Category: "wires",
-        Type: "3m"
-    }
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
+    {
+        ItemName: "tractor 2",
+        ItemsSold: 250,
+        ProfitsCash: 30000,
+        ProfitsPercentage: 25,
+        Category: "johndeere",
+        Type: "v8"
+    },
 ]
 let fakeStocks = [
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
-        ItemFullStock: 600,
-        ItemsInStock: 300
-        //calculate the percentage at runtime
-    },
-    {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
-        ItemFullStock: 900,
-        ItemsInStock: 850
-        //calculate the percentage at runtime
-    },
-    {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
-        ItemFullStock: 1000,
-        ItemsInStock: 100
-        //calculate the percentage at runtime
-    },
-    {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
     },
     {
-        ItemName: "Mabati",
-        Type: "mabati",
-        Category: "mabati",
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
+        ItemFullStock: 400,
+        ItemsInStock: 300
+        //calculate the percentage at runtime
+    },
+    {
+        ItemName: "Tractor2",
+        Type: "v8",
+        Category: "johndeere",
         ItemFullStock: 400,
         ItemsInStock: 300
         //calculate the percentage at runtime
@@ -672,7 +652,7 @@ export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName
     return(
         <div className="w-full py-2 h-auto flex flex-col gap-4 border-b-2 dark:text-white text-black border-blue-600">
             {alertState}
-            <form onSubmit={editSubmitHandler} className="w-full h-[2rem] grid grid-cols-7 gap-6 justify-items-start place-items-start text-left dark:text-white text-black">
+            <form onSubmit={editSubmitHandler} className="w-full h-[2rem] grid grid-cols-4 gap-6 justify-items-start place-items-start text-left dark:text-white text-black">
                     <div>
                         {ItemName.toUpperCase()}
                     </div>
@@ -689,15 +669,15 @@ export function InventoryItem({setSortedInventory,sortedInventory,index,ItemName
                         {/*since its a role based system the cashiers or rather the workers can only update the orders section whereby they place orders  however they can't modify the inventory section*/}
                         <input name="Quantity" style={editStyle} onChange={QuantityHandler}  type="number" className="w-24 px-2 bg-transparent" value={QuantityState}/>
                     </div>
-                    <div className="flex">
+                    <div className="hidden">
                         <span>ksh.</span>
                         <input name="bPrice" style={editStyle} onChange={buyingHandler} type="text" className="w-24 px-2 bg-transparent dark:text-white text-black" value={buyingState}/>
                     </div>
-                    <div className="flex">
+                    <div className="hidden" >
                         <span>ksh.</span>
                         <input name="sPrice" style={editStyle} onChange={sellingHandler} type="text" className="w-24 px-2 bg-transparent dark:text-white text-black" value={sellingState}/>
                     </div>
-                    <div>
+                    <div className="hidden">
                         {ArrivalDateState}
                     </div>
                     <button type="submit" className="hidden">submit</button>
