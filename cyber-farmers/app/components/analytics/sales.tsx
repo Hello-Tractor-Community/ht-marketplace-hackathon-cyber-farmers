@@ -5,7 +5,7 @@ import { Alert, EmptyAlert, EmptySection, Success } from "./notifications"
 
 import {FaDownload,FaFilter,FaSearch, FaStar,FaExclamationCircle} from "react-icons/fa"
 import { CategorySorter, itemSearch, reverseSorter } from "./utilities"
-import { objectArrDuplicateHandler } from "./inventory"
+import { objectArrDuplicateHandler } from "./listings"
 
 export type SaleItem = {
     ItemName:string,

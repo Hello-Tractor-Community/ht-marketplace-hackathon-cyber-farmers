@@ -1,13 +1,21 @@
+
+// have the analytics for both the admin and the seller whereby,for the seller it show listings of the particular seller while for the admin it shows all the listings available in the db.
+
+// role and username of the user has been accessed from the main page.tsx 
+
 "use client";
 
 import { useState,useEffect,useRef, Dispatch, SetStateAction, MutableRefObject, ReactNode} from "react"
-import {FaRegWindowClose,FaBars,FaMoon, FaBook, FaDollarSign, FaTruck, FaFacebookSquare, FaBookOpen, FaHome, FaSun, FaSalesforce, FaQuestionCircle, FaRegCheckCircle} from "react-icons/fa";
-import clsx from "clsx"
-import appIcon from "./assets/HT_LOGO_RGB_Orange.png"
-import Image from "next/image";
-import { Approvals } from "./approvals";
-import { Dealers } from "./dealer";
+import {Stock, StockItem} from "./stock"
+import {Listings} from "./listings"
+import {Inquiries} from "./inquiries"
 import { ProfileDisplay } from "./userName";
+import {SaleItem, Sales} from "./sales"
+import {FaRegWindowClose,FaBars,FaMoon, FaBook, FaDollarSign, FaTruck, FaFacebookSquare, FaBookOpen, FaHome, FaSun, FaSalesforce, FaQuestionCircle} from "react-icons/fa";
+import clsx from "clsx"
+import { Alert } from "./notifications";
+import appIcon from "./assets/Hello Tractor_RGB_BLACK_-Cart-03.png"
+import Image from "next/image";
 
 
 type LinkItem = {
@@ -27,9 +35,11 @@ type InnerLinkItem = {
 }
 
 const links:Array<LinkItem> = [
-    {name: "approvals",trackingString:"approvals", componentRef:<Approvals/>,icon:<FaRegCheckCircle/>},
     // for each inventory enable the edit and delete option the both of which bring a popup to confirm your action
-    {name: "dealers",trackingString:"dealers", componentRef:<Dealers/>,icon:<FaTruck/>},
+    {name: "listings",trackingString:"listings", componentRef:<Listings/>,icon:<FaBookOpen/>},
+    {name: "inquiries",componentRef: <Inquiries/>,icon:<FaQuestionCircle/>,trackingString: "inquiries"},
+    {name: "sales analytics",trackingString:"sales",icon:<FaDollarSign/>, componentRef:<Sales/>},
+    {name: "stock",componentRef: <Stock/>,icon:<FaBook/>,trackingString: "stock"},
 ]
 
 enum Visibility {
@@ -38,9 +48,9 @@ enum Visibility {
 }
 
 
-export function AdminWrapper({userName}:{userName:string}){
+export function AnalyticsWrapper({userName}:{userName:string}){
     const [counterState,setCounterState] = useState(0)
-    const [mainViewState,setMainViewState] = useState<JSX.Element>(<Approvals/>)
+    const [mainViewState,setMainViewState] = useState<JSX.Element>(<Listings/>)
     const [darkState,setDarkState] = useState(<></>)
     const [alertState,setAlertState] = useState(<></>)
     const [linkState,setLinkState] = useState<Array<LinkItem>>([])
@@ -53,22 +63,21 @@ export function AdminWrapper({userName}:{userName:string}){
     },[])
     
     useEffect(function(){
-        currentPath.current = "approvals"
+        currentPath.current = "listings"
         setMenuState(<HamburgerMenu setMenuState={setMenuState} itemsList={linkState} setMainViewState={setMainViewState} currentPath={currentPath} />)
     },[linkState])
 
-
     return(
         <div className="w-full h-screen fixed flex items-center flex-col gap-4 top-0 z-30 left-0 dark:bg-black bg-white">
-            <div className="w-full mx-4 py-0 text-2xl relative flex items-center box-border px-4 justify-between gap-12 h-16 pb-2 rounded-lg mb-1 bg-transparent shadow-sm shadow-blue-600">
-                <div className="flex py-0 gap-8 items-center justify-start">
+            <div className="w-full mx-4 text-2xl relative flex items-center box-border px-4 justify-between gap-12 h-12 rounded-lg mb-1 bg-transparent shadow-sm shadow-blue-600">
+                <div className="flex gap-8 items-center justify-start">
                     <FaBars className="text-2xl" onClick={(e:any) => setMenuState(<HamburgerMenu setMenuState={setMenuState} itemsList={links} setMainViewState={setMainViewState} currentPath={currentPath}/>)}/>
-                    <Image alt="icon-logo" src={appIcon} className="w-64 h-full object-fit object-center" width={512} height={64}/>
+                    <Image alt="icon-logo" src={appIcon} className="w-64 h-8 object-cover object-center" width={64} height={8}/>
                 </div>
-                <ProfileDisplay  userName={userName} img=""/>
+                <ProfileDisplay  userName="Olivia" img=""/>
             </div>
             <div className="w-full relative px-4 h-5/6 flex gap-4 bg-transparent m-0">
-                <div className="sticky w-auto  z-30 h-full flex-grow-0 flex-shrink-0 bg-transparent">
+                <div className="sticky w-auto h-full flex-grow-0 z-30 flex-shrink-0 bg-transparent">
                     {menuState}
                 </div>
                 <div className="relative w-[100%] h-full overflow-hidden flex-grow-1 bg-transparent">
@@ -79,7 +88,6 @@ export function AdminWrapper({userName}:{userName:string}){
         </div>
     )
 }
-
 
 export function HamburgerMenu({setMenuState,itemsList,setMainViewState,currentPath}:{currentPath:MutableRefObject<string>,setMainViewState:Dispatch<SetStateAction<JSX.Element>>,itemsList:Array<LinkItem>,setMenuState:Dispatch<SetStateAction<JSX.Element>>}){
     const currentPathRef = useRef<string>("")

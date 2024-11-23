@@ -202,13 +202,13 @@ type Person = {
 
 
 //items sold will be in the sales analytics page not the inventory.
-export function Inventory(){
+export function Listings(){
     const [dbInventory,setDbInventory] = useState<Array<Inventory>>(fakeInventory)
     const [popupState,setPopupState] = useState(<></>)
     const [searchLabelState,setSearchLabelState] = useState("")
     const [sortedInventory,setSortedInventory] = useState<Array<any>>([])
     const [inventoriesState,setInventoriesState] = useState<Array<any>>([])
-    const [errorText,setErrorText] = useState("error displaying the inventory section")
+    const [errorText,setErrorText] = useState("error displaying the listings section")
     const [alertState,setAlertState] = useState(<></>)
     const [counterState,setCounterState] = useState<number>(0)
     const [filterInventory,setFilterInventory] = useState<Array<Inventory>>([])
@@ -327,7 +327,7 @@ export function Inventory(){
                         <option value="Category">brand</option>
                         <option value="price">price</option>
                     </select>
-                    <button className=" rounded-lg px-3 py-1 flex gap-2 items-center"><span className="dark:text-white text-black">filter</span><FaFilter className="text-green-600"/></button>
+                    <button className=" rounded-lg px-3 py-1 flex gap-2 items-center"><span className="dark:text-white text-black">brand</span><FaFilter className="text-green-600"/></button>
                     <select onChange={filterHandler} name="periodSelection" id="periodSelection" className="border-2 border-blue-600 px-3 py-1 rounded-lg flex bg-transparent gap-2 items-center">
                         {setCreator(filterInventory).map(function(item,index){
                             return  <option key={index} value={item} className="bg-transparent">{item}</option>
