@@ -1,0 +1,6 @@
+- **Project Name**: Cyber farmers
+- **Team Members**: 
+- **Tech Stack**: Nextsjs,postgres,typescript,React
+- **Key Features**: [Briefly list the implemented features]
+- **Challenges**: Time was the major challenge, had to minimize code
+- **Lessons Learned**: get it done
