@@ -104,7 +104,7 @@ const NavBar = () => {
       </div>
 
       {/* Main Nav Links (Hidden on smaller screens, visible only on large screens) */}
-      <div className="hidden lg:flex space-x-12 items-center font-semibold">
+      <div className="hidden lg:flex xl:ml-32 space-x-12 items-center  font-semibold ">
         <Link href="/" className="font-bold text-lg hover:text-btn-hover-clr">Tractor</Link>
         <Link href="/" className="hover:text-btn-hover-clr">Tractor Add-ons</Link>
         <Link href="/cart" className="hover:text-btn-hover-clr">Farm Equipment</Link>

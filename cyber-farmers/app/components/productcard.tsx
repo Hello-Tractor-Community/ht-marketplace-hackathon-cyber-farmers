@@ -1,26 +1,15 @@
 import React from "react";
 import Link from "next/link";
+import { Product } from "../mock-data/types/Product";
 
-
-export interface Product {
-  id: string;
-  brandName: string;
-  type: string;
-  power: string;
-  reviews: number;
-  image: string;
-  price: number;
-  age: string;
-  miles: string;
-  location: string;
-  condition: string;
-  logo: string;
-  wd: string;
+interface ProductCardProps {
+  product: Product;
+  addToCart: (productId: string) => void;
 }
 
-const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = React.memo(({ product, addToCart }) => {
   return (
-    <div className="product-card w-full max-w-[300px] h-auto bg-white rounded-xl  p-5 flex flex-col mx-auto shadow-none transition-shadow duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-400">
+    <div className="product-card w-full max-w-[300px] h-auto bg-white rounded-xl p-5 flex flex-col mx-auto shadow-none transition-shadow duration-300 cursor-pointer hover:shadow-lg hover:shadow-gray-400">
       {/* Logo and Brand */}
       <div className="flex mb-2">
         <img
@@ -54,21 +43,29 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
       {/* Price and Reviews */}
       <div className="flex justify-between">
         <p className="text-sm font-semibold text-slate-300">
-          Price: <span className="text-primary-clr font-bold"> Ksh {product.price.toLocaleString()} </span>
+          Price: <span className="text-primary-clr font-bold">Ksh {product.price.toLocaleString()}</span>
         </p>
         <p className="text-primary-clr font-semibold">{product.reviews}</p>
       </div>
+      
       {/* Actions */}
       <div className="flex justify-between mt-2">
-        <Link href="/" className="px-4 py-2 font-semibold border border-primary-clr text-primary-r rounded-lg text-sm hover:bg-primary-clr hover:text-white">
+        <button
+          onClick={() => addToCart(product.id)}
+          className="px-4 py-2 font-semibold border border-primary-clr text-primary-r rounded-lg text-sm hover:bg-primary-clr hover:text-white"
+        >
           Add to cart
-        </Link>
-        <Link href="/" className="px-4 py-2 border font-semibold bg-primary-clr text-white rounded-lg text-sm hover:text-primary-clr hover:bg-white hover:border-primary-clr">
+        </button>
+        <Link
+          href="/"
+          className="px-4 py-2 border font-semibold bg-primary-clr text-white rounded-lg text-sm hover:text-primary-clr hover:bg-white hover:border-primary-clr"
+        >
           Quick Buy
         </Link>
       </div>
     </div>
   );
-};
+});
 
 export default ProductCard;
+

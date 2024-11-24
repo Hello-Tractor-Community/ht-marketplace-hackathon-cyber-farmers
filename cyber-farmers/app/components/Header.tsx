@@ -1,31 +1,40 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-const Header: React.FC = () => {
-  const [cartCount, setCartCount] = useState(2); // Placeholder
+const Header: React.FC<{ cartCount: number }> = ({ cartCount }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState({
     name: "Kenya",
-    flag: "/img/flags/kenya.png",
+    flag: "img/flags/kenya.png",
   });
 
   const countries = [
-    { name: "Kenya", flag: "/img/flags/kenya.png" },
-    { name: "Tanzania", flag: "/img/flags/Tanzania.png" },
-    { name: "Nigeria", flag: "/img/flags/nigeria.png" },
+    { name: "Kenya", flag: "img/flags/kenya.png" },
+    { name: "Tanzania", flag: "img/flags/Tanzania.png" },
+    { name: "Nigeria", flag: "img/flags/nigeria.png" },
   ];
 
   const handleCountrySelect = (country: typeof selectedCountry) => {
     setSelectedCountry(country);
+    setIsDropdownOpen(false); // Close the dropdown when a country is selected
+  };
+
+  const closeMenus = () => {
     setIsDropdownOpen(false);
+    setIsProfileMenuOpen(false);
   };
 
   return (
-    <header className="bg-neutral-900 shadow-md p-4">
+    <header className="bg-neutral-900 shadow-md p-4" onClick={closeMenus}>
       <div className="container mx-auto flex flex-wrap justify-between items-center">
         {/* Logo */}
         <Link href="/">
-          <img src="/img/Logo/HT_LOGO_RGB_Orange.png" className="w-[180px]" alt="Logo" />
+          <img
+            src="/img/Logo/HT_LOGO_RGB_Orange.png"
+            className="w-[180px] hidden sm:block"
+            alt="Logo"
+          />
         </Link>
 
         {/* Actions */}
@@ -42,7 +51,10 @@ const Header: React.FC = () => {
           <div className="relative">
             <div
               className="flex items-center cursor-pointer space-x-2"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent click from closing the dropdown
+                setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
+              }}
             >
               <img
                 src={selectedCountry.flag}
@@ -60,7 +72,11 @@ const Header: React.FC = () => {
                     className="flex items-center p-2 hover:bg-primary-clr cursor-pointer"
                     onClick={() => handleCountrySelect(country)}
                   >
-                    <img src={country.flag} alt={country.name} className="w-6 h-4 rounded mr-2" />
+                    <img
+                      src={country.flag}
+                      alt={country.name}
+                      className="w-6 h-4 rounded mr-2"
+                    />
                     <span>{country.name}</span>
                   </li>
                 ))}
@@ -68,23 +84,51 @@ const Header: React.FC = () => {
             )}
           </div>
 
-          {/* Cart */}
-          <div className="relative">
-            <Link href="/cart">
-              <p className="text-white">
-                🛒
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
-                  {cartCount}
-                </span>
-              </p>
-            </Link>
+          {/* Cart Icon */}
+          <div className="relative hover:scale-105 transition-transform">
+            <p className="text-white cursor-pointer">
+              🛒
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
+                {cartCount}
+              </span>
+            </p>
           </div>
 
-          {/* Account Dropdown */}
-          <div className="relative">
-            <button className="border border-gray-300 rounded-md p-2">
+          {/* Profile Menu */}
+          <div
+            className="relative"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent click from closing the dropdown
+              setIsProfileMenuOpen(!isProfileMenuOpen); // Toggle profile menu visibility
+            }}
+          >
+            <button className="border border-gray-300 rounded-md p-2 hover:bg-gray-700 transition-colors">
               <img src="/img/icons/profile-icon.png" className="w-6" alt="Profile" />
             </button>
+
+            {isProfileMenuOpen && (
+              <div className="absolute right-0 mt-2 bg-neutral-800 text-white rounded-md shadow-lg w-40">
+                <div className="p-4">
+                  <p className="font-bold">User Name</p>
+                  <p className="text-sm text-gray-400">user@example.com</p>
+                </div>
+                <hr className="border-gray-600" />
+                <ul>
+                  <li className="p-2 hover:bg-primary-clr cursor-pointer">
+                    <Link href="/profile">Profile</Link>
+                  </li>
+                  <li className="p-2 hover:bg-primary-clr cursor-pointer">
+                    <Link href="/settings">Settings</Link>
+                  </li>
+                  <li className="p-2 hover:bg-primary-clr cursor-pointer">
+                    <Link href="/orders">Orders</Link>
+                  </li>
+                  <li className="p-2 hover:bg-primary-clr cursor-pointer">
+                    <Link href="/logout">Logout</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -93,3 +137,4 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+
