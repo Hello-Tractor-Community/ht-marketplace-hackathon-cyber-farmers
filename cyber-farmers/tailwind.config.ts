@@ -11,6 +11,11 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "primary-clr": "var(--primary-clr)",
+        "btn-hover-clr": "var(--btn-hover-clr)",
+        "btn-hover-txt": "var(--btn-hover-txt)",
+        "secondary-clr": "var(--secondary-clr)",
+        "bg-clr": "var(--bg-clr)"
       },
     },
   },

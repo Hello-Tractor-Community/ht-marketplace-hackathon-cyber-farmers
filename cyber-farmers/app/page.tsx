@@ -1,20 +1,46 @@
-'use client';
+"use client";
+import "./globals.css";
+import React, { useState } from "react";
 
-import { CldImage } from 'next-cloudinary';
+import SparePartSection from './components/home-page/SparePartSection'
+import Header from './components/Header';
+import HeroSection from './components/home-page/HeroSection';
+import NavBar from './components/NavBar';
+import CategorySection from "./components/home-page/CategorySection";
+//import FeaturedBrands from '../components/home/FeaturedBrands';
+import ProductSection from './components/home-page/ProductSection';
+import NewsletterSection from "./components/home-page/NewsLetterSection";
+import Footer from "./components/Footer";
+import ProductCard from "./components/productcard";
+import { Product } from "@/app/mock-data/types/Product";
+import { mockProducts } from "@/app/mock-data/products";
 
-export default function Home() {
-  console.log('Home');
+const HomePage = () => {
+  const [cartCount, setCartCount] = useState(0);
+  const [cart, setCart] = useState<Product[]>([]); // State to hold cart products
+
+  const handleAddToCart = (productId: string) => {
+    const product = mockProducts.find((prod) => prod.id === productId);
+    if (product) {
+      setCart((prevCart) => [...prevCart, product]);
+      setCartCount((prevCount) => prevCount + 1);
+      console.log(`Product ${product.brandName} added to cart`);
+    }
+  };
   return (
-    <div className='container'>
-      <h1>Cloudinary Image in Next.js with CldImage</h1>
-      <CldImage
-        src='media/cyberFarmers/8943ba0de16ed09560b83289fd89aa89.jpg'
-        width='500'
-        height='500'
-        alt='Cyber Farmers Image'
-        crop='scale'
-        priority
-      />
+    <div>
+      <Header cartCount={cartCount} />
+      <NavBar />
+      <HeroSection />
+      <CategorySection />
+      <ProductSection />
+      <SparePartSection />
+      <NewsletterSection />
+      <Footer />
     </div>
-  );
-}
+
+
+  );  
+};
+
+export default HomePage;
