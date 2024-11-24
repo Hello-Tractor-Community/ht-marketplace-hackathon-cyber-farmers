@@ -9,6 +9,8 @@ export interface Product {
     age: string;
     miles: string;
     location: string;
+    logo: string;
+    wd: string;
     condition: "new" | "used";
     fastMoving: boolean;
   }

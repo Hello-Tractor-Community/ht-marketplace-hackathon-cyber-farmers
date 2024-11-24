@@ -15,6 +15,7 @@ export default {
         "btn-hover-clr": "var(--btn-hover-clr)",
         "btn-hover-txt": "var(--btn-hover-txt)",
         "secondary-clr": "var(--secondary-clr)",
+        "bg-clr": "var(--bg-clr)"
       },
     },
   },

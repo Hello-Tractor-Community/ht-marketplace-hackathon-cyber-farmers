@@ -1,116 +1,92 @@
-import React from 'react';
-import Link from 'next/link';
-import { useState } from 'react';
-
+import React, { useState } from "react";
+import Link from "next/link";
 
 const Header: React.FC = () => {
-  const [cartCount, setCartCount] = useState(2); // to be replaced with dynamic data later
+  const [cartCount, setCartCount] = useState(2); // Placeholder
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState({
     name: "Kenya",
     flag: "/img/flags/kenya.png",
-    
   });
 
   const countries = [
-    {
-      name: "Ken",
-      flag: "/img/flags/kenya.png",
-      
-    },
-    {
-      name: "Tz",
-      flag: "/img/flags/Tanzania.png",
-      
-    },
-    {
-      name: "Ng",
-      flag: "/img/flags/nigeria.png",
-      
-    },
+    { name: "Kenya", flag: "/img/flags/kenya.png" },
+    { name: "Tanzania", flag: "/img/flags/Tanzania.png" },
+    { name: "Nigeria", flag: "/img/flags/nigeria.png" },
   ];
+
   const handleCountrySelect = (country: typeof selectedCountry) => {
     setSelectedCountry(country);
-    setIsDropdownOpen(false); // Close the dropdown after selection
+    setIsDropdownOpen(false);
   };
+
   return (
-    <header className="bg-neutral-900 shadow-md p-0 ">
-      <div className="container mx-auto px-4 py-0 flex justify-between items-center">
+    <header className="bg-neutral-900 shadow-md p-4">
+      <div className="container mx-auto flex flex-wrap justify-between items-center">
         {/* Logo */}
         <Link href="/">
-          <img src='/img/Logo/HT_LOGO_RGB_Orange.png' className='w-[200px]' alt='logo'></img>
+          <img src="/img/Logo/HT_LOGO_RGB_Orange.png" className="w-[180px]" alt="Logo" />
         </Link>
-        
-        <div className='relative flex ver-txt justify-between items-center space-x-12 '>
-          {/* Seller's Button*/}
-          <div className="flex flex-1  ">
-            
-            <Link href='/' className=" bg-primary-clr text-white  px-4 py-2 rounded-md hover:bg-btn-hover-clr">
-              Become a Seller today
+
+        {/* Actions */}
+        <div className="flex items-center space-x-6">
+          {/* Seller Button */}
+          <Link
+            href="/"
+            className="bg-primary-clr text-white px-4 py-2 rounded-md hover:bg-btn-hover-clr"
+          >
+            Become a Seller today
+          </Link>
+
+          {/* Country Selector */}
+          <div className="relative">
+            <div
+              className="flex items-center cursor-pointer space-x-2"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <img
+                src={selectedCountry.flag}
+                alt={selectedCountry.name}
+                className="w-6 h-4 rounded"
+              />
+              <span className="text-sm text-white">{selectedCountry.name}</span>
+            </div>
+
+            {isDropdownOpen && (
+              <ul className="absolute z-10 mt-2 bg-neutral-800 text-white rounded-md shadow-lg w-40">
+                {countries.map((country) => (
+                  <li
+                    key={country.name}
+                    className="flex items-center p-2 hover:bg-primary-clr cursor-pointer"
+                    onClick={() => handleCountrySelect(country)}
+                  >
+                    <img src={country.flag} alt={country.name} className="w-6 h-4 rounded mr-2" />
+                    <span>{country.name}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* Cart */}
+          <div className="relative">
+            <Link href="/cart">
+              <p className="text-white">
+                🛒
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
+                  {cartCount}
+                </span>
+              </p>
             </Link>
           </div>
 
-          {/* Country Selector */}
-          <div className="relative flex justify-between items-center">
-            {/* Selected Country */}
-              <div
-                className="flex items-center space-x-2 p-2  cursor-pointer"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                title="Choose country"
-              >
-                <img
-                  src={selectedCountry.flag}
-                  alt={selectedCountry.name}
-                  className="w-6 h-4 object-cover rounded-sm"
-                />
-                <span className="text-sm font-medium"></span>
-                <img src="/" alt="" />
-              </div>
-
-                    
-                 
-
-              {/* Cart */}
-              <div className="relative mx-4">
-                    <Link href="/">
-                      <p className="text-gray-700">
-                        🛒 
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">
-                          {cartCount}
-                        </span>
-                      </p>
-                    </Link>
-              </div>
-              {/* Dropdown Menu */}
-              {isDropdownOpen && (
-                <ul className="absolute z-10 mt-44 rounded-lg text-white  bg-opacity-35 p-0  bg-black shadow-md ">
-                  {countries.map((country) => (
-                    <li
-                      key={country.name}
-                      className="flex items-center p-3 rounded-md  hover:bg-btn-hover-clr hover:text-white cursor-pointer"
-                      onClick={() => handleCountrySelect(country)}
-                    >
-                      <img
-                        src={country.flag}
-                        alt={country.name}
-                        className="w-6 h-4 object-cover rounded-sm mr-2"
-                      />
-                      <span className="text-sm font-medium flex-1">{country.name}</span>
-                     
-                    </li>
-                  ))}
-                </ul>
-              )}
-          </div>
           {/* Account Dropdown */}
           <div className="relative">
-            <button className="border border-gray-300 text-white rounded-md px-3 py-2">
-              <img src="/img/icons/profile-icon.png" className='w-[20px]' alt="" />
+            <button className="border border-gray-300 rounded-md p-2">
+              <img src="/img/icons/profile-icon.png" className="w-6" alt="Profile" />
             </button>
           </div>
-
         </div>
-
       </div>
     </header>
   );

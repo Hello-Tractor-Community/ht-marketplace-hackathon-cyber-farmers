@@ -1,38 +1,71 @@
 import { useEffect, useState } from "react";
 import { Product } from "./types/Product";
-import { mockProducts } from "./products";
+import { mockProducts } from "@/app/mock-data/products";
 
-const useProducts = (filters: any) => {
+const useProducts = (filters: { condition: string }) => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setLoading(true);
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchData = async () => {
-      setLoading(true);
+      try {
+        let filteredProducts = [...mockProducts];
 
-      // Replace this logic with an actual API call when the backend is ready
-      const data = mockProducts; // Mock data for now
+        // Apply filtering logic
+        switch (filters.condition) {
+          case "new":
+            filteredProducts = filteredProducts.filter(
+              (product) => product.condition === "new"
+            );
+            break;
+          case "used":
+            filteredProducts = filteredProducts.filter(
+              (product) => product.condition === "used"
+            );
+            break;
+          case "fastMoving":
+            filteredProducts = filteredProducts.filter(
+              (product) => product.fastMoving
+            );
+            break;
+          case "location":
+            filteredProducts = filteredProducts.filter(
+              (product) => product.location.toLowerCase() === "kisumu"
+            );
+            break;
+          case "under1m":
+            filteredProducts = filteredProducts.filter(
+              (product) => product.price <= 1000000
+            );
+            break;
+          default:
+            break;
+        }
 
-      // Apply filters
-      let filteredProducts = data;
-      if (filters.condition) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.condition === filters.condition
-        );
+        setTimeout(() => {
+          if (!signal.aborted) {
+            setProducts(filteredProducts.slice(0, 8));
+            setLoading(false);
+          }
+        }, 500); // Simulate delay
+      } catch (err) {
+        // Check if the error is an instance of Error
+        if (err instanceof Error) {
+          console.error("Error fetching products:", err.message);
+        } else {
+          console.error("Unexpected error:", err);
+        }
       }
-      if (filters.fastMoving) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.fastMoving === filters.fastMoving
-        );
-      }
-      // Add more filters as needed...
-
-      setProducts(filteredProducts);
-      setLoading(false);
     };
 
     fetchData();
-  }, [filters]);
+
+    return () => controller.abort(); // Cleanup on unmount or re-run
+  }, [filters]); // Re-run only when `filters` changes
 
   return { products, loading };
 };
