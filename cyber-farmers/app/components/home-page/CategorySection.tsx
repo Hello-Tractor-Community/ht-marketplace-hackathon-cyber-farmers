@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const categories = [
   { name: 'Tractors', src: '/img/icons/Tractor.png' },
@@ -24,9 +25,11 @@ const CategorySection = () => {
               className="flex flex-col items-center mb-6 sm:mb-0"
             >
               <div className="bg-primary-clr p-5 items-center rounded-full">
-                <img
+                <Image
                   src={category.src}
                   alt={category.name}
+                  width={64}
+                  height={64}
                   className="w-16 h-16 sm:w-20 sm:h-20"
                 />
               </div>

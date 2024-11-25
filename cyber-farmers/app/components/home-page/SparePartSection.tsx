@@ -1,4 +1,5 @@
 import React from "react";
+import Image from 'next/image';
 
 const Section = () => {
   const products = [
@@ -11,7 +12,7 @@ const Section = () => {
       miles: "0 miles",
       location: "Nairobi",
       condition: "New",
-      image: "img/tractor-images/L4508.png",
+      image: "/img/tractor-images/L4508.png",
     },
     {
       id: 2,
@@ -22,7 +23,7 @@ const Section = () => {
       miles: "500 miles",
       location: "Kisumu",
       condition: "Used",
-      image: "img/tractor-images/L3408.png",
+      image: "/img/tractor-images/L3408.png",
     },
     {
       id: 3,
@@ -33,25 +34,25 @@ const Section = () => {
       miles: "2000 miles",
       location: "Mombasa",
       condition: "Used",
-      image: "img/tractor-images/L3408.png",
+      image: "/img/tractor-images/L3408.png",
     },
   ];
   const spares = [
     {
       id:11,
-      image: 'img/spares/augers.png',
+      image: '/img/spares/augers.png',
       name: 'Augers',
       price: '5,000'
     },
     {
       id:22,
-      image: 'img/spares/feederhousechain.png',
+      image: '/img/spares/feederhousechain.png',
       name: 'Feeder House Chain',
       price: '4,000'
     },
     {
       id:33,
-      image: 'img/spares/bearings.png',
+      image: '/img/spares/bearings.png',
       name: 'Bearings',
       price: '1,000'
     }
@@ -60,7 +61,7 @@ const Section = () => {
   return (
     <section className="w-full px-4 lg:px-12 py-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Column 1: Farm on a Budget */}
+        {/* Column 1: Show Featured products. e.g Budget friendly equipment*/}
         <div className="space-y-4">
           <h2 className="text-gray-600 text-lg font-semibold text-primary-clr">Featured Products</h2>
           <h3 className="text-3xl font-bold text-gray-900">The Versatile Kubota L Series</h3>
@@ -74,6 +75,8 @@ const Section = () => {
                 <img
                   src={product.image}
                   alt={product.name}
+                  width={128}
+                  height={128}
                   className="w-32 h-32 object-cover rounded"
                 />
                 <div>
@@ -136,10 +139,12 @@ const Section = () => {
                 key={product.id}
                 className="flex items-center space-x-4 border p-4 rounded-md shadow-sm hover:shadow-md transition-shadow"
               >
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
-                  className="w-40 h-36 object-cover rounded"
+                  width={160}
+                  height={144}
+                  className=" object-cover rounded"
                 />
                 <div>
                   <h4 className="text-lg font-medium ">{product.name}</h4>

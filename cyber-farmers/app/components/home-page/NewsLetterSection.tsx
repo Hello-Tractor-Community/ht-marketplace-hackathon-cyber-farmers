@@ -3,7 +3,7 @@ const NewsletterSection = () => {
       <div
         className="relative bg-cover bg-center h-72 py-12 px-4 sm:px-8"
         style={{
-          backgroundImage: "linear-gradient(to left, rgba(255,72,34, 0.5), rgba(0, 0, 0, 0)), url('img/bg/tractor-cultivating-field.png')", 
+          backgroundImage: "linear-gradient(to left, rgba(255,72,34, 0.5), rgba(0, 0, 0, 0)), url('/img/bg/tractor-cultivating-field.png')", 
         }}
       >
         <div className="absolute right-0 top-0  h-full w-full  z-10 opacity-90 text-white rounded-md p-8 max-w-4xl mx-auto text-center"

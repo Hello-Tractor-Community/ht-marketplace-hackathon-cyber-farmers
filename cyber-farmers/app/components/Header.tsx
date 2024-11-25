@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from 'next/image';
 
 const Header: React.FC<{ cartCount: number }> = ({ cartCount }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState({
     name: "Kenya",
-    flag: "img/flags/kenya.png",
+    flag: "/img/flags/kenya.png",
   });
 
   const countries = [
-    { name: "Kenya", flag: "img/flags/kenya.png" },
-    { name: "Tanzania", flag: "img/flags/Tanzania.png" },
-    { name: "Nigeria", flag: "img/flags/nigeria.png" },
+    { name: "Kenya", flag: "/img/flags/kenya.png" },
+    { name: "Tanzania", flag: "/img/flags/Tanzania.png" },
+    { name: "Nigeria", flag: "/img/flags/nigeria.png" },
   ];
 
   const handleCountrySelect = (country: typeof selectedCountry) => {
@@ -30,10 +31,12 @@ const Header: React.FC<{ cartCount: number }> = ({ cartCount }) => {
       <div className="container mx-auto flex flex-wrap justify-between items-center">
         {/* Logo */}
         <Link href="/">
-          <img
+          <Image
             src="/img/Logo/HT_LOGO_RGB_Orange.png"
-            className="w-[180px] hidden sm:block"
+            className=" w-[hidden sm:block"
             alt="Logo"
+            width={180}
+            height={180}
           />
         </Link>
 
@@ -56,10 +59,12 @@ const Header: React.FC<{ cartCount: number }> = ({ cartCount }) => {
                 setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
               }}
             >
-              <img
+              <Image
                 src={selectedCountry.flag}
                 alt={selectedCountry.name}
-                className="w-6 h-4 rounded"
+                className=" rounded"
+                width={18}
+                height={16}
               />
               <span className="text-sm text-white">{selectedCountry.name}</span>
             </div>
@@ -72,10 +77,12 @@ const Header: React.FC<{ cartCount: number }> = ({ cartCount }) => {
                     className="flex items-center p-2 hover:bg-primary-clr cursor-pointer"
                     onClick={() => handleCountrySelect(country)}
                   >
-                    <img
+                    <Image
                       src={country.flag}
+                      width={18}
+                      height={16}
                       alt={country.name}
-                      className="w-6 h-4 rounded mr-2"
+                      className=" rounded mr-2"
                     />
                     <span>{country.name}</span>
                   </li>
@@ -103,7 +110,8 @@ const Header: React.FC<{ cartCount: number }> = ({ cartCount }) => {
             }}
           >
             <button className="border border-gray-300 rounded-md p-2 hover:bg-gray-700 transition-colors">
-              <img src="/img/icons/profile-icon.png" className="w-6" alt="Profile" />
+              <Image src="/img/icons/profile-icon.png" width={16}
+                height={16} alt="Profile" />
             </button>
 
             {isProfileMenuOpen && (
