@@ -13,7 +13,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ addToCart }) => {
   const itemsPerPage = 8;
   const [activeFilter, setActiveFilter] = useState<string>("new"); // Track which filter is active
 
-  const router = useRouter(); // Ensure router context is available
+  const router = useRouter(); 
 
   const { products, loading } = useProducts(filter, currentPage, itemsPerPage);
 

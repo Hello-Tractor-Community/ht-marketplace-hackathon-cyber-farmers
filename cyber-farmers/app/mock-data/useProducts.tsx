@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { Listing, ListingStatus, Category, User, Role } from "../hello_interfaces";
 
+
 interface UseProductsProps {
   filter: {
     isNew: boolean;
@@ -11,7 +12,7 @@ interface UseProductsProps {
   itemsPerPage: number;
 }
 
-// Mock seller and images (unchanged from your original code)
+// Mock seller and images 
 const mockSeller: User = {
   id: 1,
   firstName: "John",
@@ -36,19 +37,19 @@ const mockSeller: User = {
 };
 
 const mockImages = ["/img/tractor-images/tr-1.png", "/img/tractor-images/tr-2.png"];
-
-// Generate mock listings with more diverse filters
+let idCounter = 1;
+// Generate mock listings 
 const generateMockListings = (count: number, isNew: boolean, under1M: boolean, location: string): Listing[] => {
-  return Array.from({ length: count }, (_, i) => {
+  return Array.from({ length: count }, () => {
     const hoursUsed = isNew ? 0 : Math.floor(Math.random() * 5000);
     const price = Math.random() * (isNew ? 2000000 : 1500000) + 50000;
     const locations = ["Tanzania", "Kenya", "Nigeria", "Uganda", "South Africa"];
-    const locationChoice = location || locations[i % locations.length];
+    const locationChoice = location || locations[Math.floor(Math.random() * locations.length)];
 
     return {
-      id: i + 1,
-      title: `${isNew ? "New" : "Used"} Tractor ${i + 1}`,
-      images: [mockImages[i % mockImages.length]],
+      id: idCounter++,
+      title: `${isNew ? "New" : "Used"} Tractor`,
+      images: [mockImages[Math.floor(Math.random() * mockImages.length)]],
       price: Math.round(price),
       location: locationChoice,
       status: isNew ? ListingStatus.ACTIVE : ListingStatus.PENDING,
@@ -102,7 +103,7 @@ const useProducts = (
         return meetsCondition && meetsPrice && meetsLocation;
       });
 
-      console.log("Filtered Listings: ", filteredListings); // Debugging the filter
+      //console.log("Filtered Listings: ", filteredListings); // Debugging the filter
 
       // Paginate the results
       const startIndex = (page - 1) * itemsPerPage;
