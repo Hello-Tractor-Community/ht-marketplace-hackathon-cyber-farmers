@@ -9,6 +9,7 @@ import { getUserByEmail } from "./lib/user"
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
+  
   providers: [
     Credentials({
       name: "Credentials",

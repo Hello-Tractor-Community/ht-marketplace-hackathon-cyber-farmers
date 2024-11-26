@@ -114,7 +114,7 @@ export default function TractorsComponent() {
                     required
                 />
                 <input
-                    type="text"
+                    type="file"
                     value={newListing.image}
                     onChange={(e) => setNewListing({ ...newListing, image: e.target.value })}
                     placeholder="Image URL"

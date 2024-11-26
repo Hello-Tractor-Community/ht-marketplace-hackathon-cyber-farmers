@@ -14,10 +14,10 @@ export async function POST(request: Request) {
 
         // Send the email with the user's dynamic first name
         const { data, error } = await resend.emails.send({
-            from: 'Acme <onboarding@resend.dev>',
-            to: [email], // Send to the user's email
+            from: 'Cyber Farmers',
+            to: [email],
             subject: 'Welcome to Cyber Farmers',
-            react: EmailTemplate({ firstName }),  // Pass the dynamic firstName to the email template
+            react: EmailTemplate({ firstName }),  
         });
 
         // Check for any error in sending the email
