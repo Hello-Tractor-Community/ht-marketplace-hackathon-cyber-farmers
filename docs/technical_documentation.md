@@ -4,9 +4,12 @@
 
 ## Live Link => https://www.cyber-farmers.vercel.app/
 
-## API =>
+## API => https://ht-marketplace-hackathon-cyber-farmers.onrender.com/admin
 
-## Swagger Documentation =>
+`username`: `admin`
+`password`: `admin`
+
+## Swagger Documentation => https://ht-marketplace-hackathon-cyber-farmers.onrender.com/tractors/swagger
 
 ## Database Schema =>
 
@@ -87,4 +90,6 @@ python manage.py runserver
 
 ## Sample API Endpoints/Images/Videos
 
-![image](https://i.ibb.co/8rcbFrB/image.png)
+![adminDashboard](https://i.ibb.co/8rcbFrB/image.png)
+
+![frontend](https://i.ibb.co/56g2SQN/Screenshot-From-2024-11-26-14-52-51.png)
