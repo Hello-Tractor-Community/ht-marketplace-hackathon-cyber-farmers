@@ -101,6 +101,7 @@ CLOUDINARY_STORAGE = {
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -289,4 +290,10 @@ MPESA_CONFIG = {
     "lipa_na_mpesa_online_shortcode": os.getenv("SHORTCODE"),
     "validation_url": os.getenv("VALIDATION_URL"),
     "confirmation_url": os.getenv("CONFIRMATION_URL"),
+}
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
 }
