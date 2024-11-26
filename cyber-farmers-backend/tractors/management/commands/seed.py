@@ -1,71 +1,82 @@
-import csv
-import random
-from faker import Faker  # Import Faker
 from django.core.management.base import BaseCommand
-from tractors.models import Tractor
 from users.models import CustomUser
-
-DEFAULT_LOCATION = "Unknown"
+from tractors.models import Tractor
+from reviews.models import Review
+import random
+from faker import Faker
 
 
 class Command(BaseCommand):
-    help = "Seed tractor data from CSV"
+    help = "Seed the database with sample data"
 
     def handle(self, *args, **kwargs):
-        fake = Faker()  # Initialize Faker instance
+        fake = Faker()
 
-        # Fetch the approved seller with 'seller' role
-        seller = CustomUser.objects.filter(
-            role="seller", is_approved_seller=True
-        ).first()
-
-        if not seller:
-            self.stdout.write(
-                self.style.ERROR("No approved seller found. Add one first.")
-            )
-            return
-
-        csv_file_path = "assets/Asset_models_urls.csv"
-
-        try:
-            with open(csv_file_path, "r", encoding="utf-8") as file:
-                reader = csv.DictReader(file)
-                headers = [
-                    field.strip().lower() for field in reader.fieldnames
-                ]  # Normalize headers
-
-                self.stdout.write(
-                    self.style.NOTICE(f"Normalized Headers: {headers}")
-                )  # Debugging: Check normalized headers
-
-                for row in reader:
-                    logo_url = row.get("tractor_model_logo_url", "").strip()
-                    price = row.get("price", "").strip() or round(
-                        random.uniform(5000, 20000), 2
-                    )
-                    model_name = (
-                        row.get("model", "").strip() or fake.word().capitalize()
-                    )  # Use Faker fallback
-
-                    if model_name and logo_url:  # Ensure data integrity
-                        Tractor.objects.create(
-                            seller=seller,
-                            price=float(price),
-                            description=f"A {model_name} tractor available for sale. {fake.sentence(nb_words=10)}",
-                            location=fake.city(),
-                            hours_used=random.randint(0, 5000),  # Random usage hours
-                            brand=model_name.split()[0],
-                            image=logo_url,
-                        )
-            self.stdout.write(self.style.SUCCESS("Tractor data seeded successfully!"))
-
-        except KeyError as ke:
-            self.stdout.write(
-                self.style.ERROR(
-                    f"Key error: {ke}. Check if CSV headers match expected field names."
+        def create_approved_seller():
+            approved_seller = CustomUser.objects.filter(
+                role="seller", is_approved_seller=True
+            ).first()
+            if not approved_seller:
+                approved_seller = CustomUser.objects.create_user(
+                    username=fake.user_name(),
+                    email=fake.email(),
+                    password="password123",
+                    role="seller",
+                    is_approved_seller=True,
+                    phone=fake.phone_number(),
                 )
-            )
-        except Exception as e:
-            self.stdout.write(
-                self.style.ERROR(f"Error while processing the CSV file: {e}")
-            )
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"Created approved seller: {approved_seller.username}"
+                    )
+                )
+            return approved_seller
+
+        def create_users(n=10):
+            for _ in range(n):
+                role = random.choice(["buyer", "seller"])
+                is_approved_seller = role == "seller" and random.choice([True, False])
+                CustomUser.objects.create_user(
+                    username=fake.user_name(),
+                    email=fake.email(),
+                    password="password123",
+                    role=role,
+                    is_approved_seller=is_approved_seller,
+                    phone=fake.phone_number(),
+                )
+
+        def create_tractors(n=15):
+            approved_seller = create_approved_seller()
+            sellers = CustomUser.objects.filter(role="seller", is_approved_seller=True)
+            for _ in range(n):
+                Tractor.objects.create(
+                    seller=random.choice(sellers),
+                    title=fake.word().capitalize() + " Tractor",
+                    description=fake.text(),
+                    price=round(random.uniform(1000, 50000), 2),
+                    location=fake.city(),
+                    hours_used=random.randint(100, 10000),
+                    brand=fake.company(),
+                )
+
+        def create_reviews(n=20):
+            buyers = CustomUser.objects.filter(role="buyer")
+            tractors = Tractor.objects.all()
+            if not tractors.exists():
+                self.stdout.write(
+                    self.style.WARNING("No tractors found. Add tractors first.")
+                )
+                return
+            for _ in range(n):
+                Review.objects.create(
+                    user=random.choice(buyers),
+                    tractor=random.choice(tractors),
+                    rating=random.randint(1, 5),
+                    comment=fake.text(),
+                )
+
+        # Run all creation functions
+        create_users()
+        create_tractors()
+        create_reviews()
+        self.stdout.write(self.style.SUCCESS("Database seeded successfully."))

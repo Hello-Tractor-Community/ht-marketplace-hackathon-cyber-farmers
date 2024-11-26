@@ -4,7 +4,7 @@ export enum Role {
     SELLER = "SELLER",
     ADMIN = "ADMIN"
 }
-
+  
 export interface User {
     id: number;
     firstName: string;
@@ -51,13 +51,13 @@ export enum Category {
     FARMTOOL = "FARMTOOL",
     SPARE_PART = "SPARE_PART"
 }
-
+  
 export enum ListingStatus {
     ACTIVE = "ACTIVE",
     PENDING = "PENDING",
     SOLD = "SOLD"
 }
-
+  
 export interface Listing {
     id: number;
     title: string;
@@ -164,7 +164,7 @@ export interface Transaction {
     seller: User;
     review?: Review;
 }
-
+  
 export enum TransactionStatus {
     PENDING = "PENDING",
     COMPLETED = "COMPLETED",
@@ -183,7 +183,7 @@ export interface AdminApproval {
     listingId?: number;
     listing?: Listing;
 }
-
+  
 export enum ApprovalStatus {
     PENDING = "PENDING",
     APPROVED = "APPROVED",

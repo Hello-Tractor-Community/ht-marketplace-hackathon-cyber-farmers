@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 import threading
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.models import SocialLogin
 from allauth.socialaccount.providers import registry
@@ -145,12 +146,23 @@ class DeleteUserView(APIView):
 
 
 class UserListView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = []
 
     def get(self, request):
         users = CustomUser.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
+
+
+class UserByID(APIView):
+    # Uncomment this line and set appropriate permissions for production
+    # permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, id):
+        # Use get_object_or_404 for better error handling
+        user = get_object_or_404(CustomUser, id=id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class RefreshTokenView(APIView):
@@ -162,8 +174,16 @@ class RefreshTokenView(APIView):
 
 
 class AuthStatusView(APIView):
+    """
+    Check if user is authenticated and return user details else false 401
+    """
+
     def get(self, request):
-        return Response({"status": "Authenticated"})
+        if request.user.is_authenticated:
+            user = request.user
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        return Response(status=401)
 
 
 class GoogleLoginView(APIView):

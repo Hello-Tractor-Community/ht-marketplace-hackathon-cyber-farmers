@@ -4,9 +4,11 @@ from tractors.models import Tractor
 
 
 class Review(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name="reviews"
+    )
     tractor = models.ForeignKey(
-        Tractor, related_name="reviews", on_delete=models.CASCADE
+        Tractor, on_delete=models.CASCADE, related_name="reviews"
     )
     rating = models.IntegerField()
     comment = models.TextField()

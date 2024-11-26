@@ -11,6 +11,7 @@ urlpatterns = [
         views.ChangePasswordView.as_view(),
         name="change-password",
     ),
+    path("users/<int:id>/", views.UserByID.as_view(), name="user-detail"),
     path("users/logout/", views.LogoutUserView.as_view(), name="logout"),
     path(
         "users/refresh-token/", views.RefreshTokenView.as_view(), name="refresh-token"
